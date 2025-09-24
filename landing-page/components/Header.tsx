@@ -30,9 +30,7 @@ const Header = () => {
       className={`fixed top-0 w-full z-50 transition-all duration-300 ${
         isScrolled ? 'bg-white/95 backdrop-blur-md shadow-lg' : 'bg-transparent'
       }`}
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      transition={{ duration: 0.6 }}
+      initial={false}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center py-4">
@@ -102,19 +100,19 @@ const Header = () => {
         <AnimatePresence>
           {isMobileMenuOpen && (
             <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.3 }}
-              className="md:hidden border-t border-slate-200"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="md:hidden fixed inset-x-0 top-16 z-40"
             >
-              <div className="py-4 space-y-4">
+              <div className="bg-white/95 backdrop-blur-md border-t border-slate-200 shadow-lg py-4 space-y-4 px-4">
                 {['Features', 'Security', 'How It Works', 'Pricing', 'FAQ'].map((item, index) => (
                   <motion.button
                     key={item}
-                    className="block w-full text-left text-slate-700 hover:text-primary transition-colors py-2"
+                    className="block w-full text-left text-slate-700 hover:text-primary transition-colors py-3 text-base"
                     onClick={() => scrollToSection(item.toLowerCase().replace(' ', '-'))}
-                    initial={{ opacity: 0, x: -20 }}
+                    initial={{ opacity: 0, x: -10 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: index * 0.1 }}
                   >
@@ -122,12 +120,12 @@ const Header = () => {
                   </motion.button>
                 ))}
                 <motion.div
-                  initial={{ opacity: 0, x: -20 }}
+                  initial={{ opacity: 0, x: -10 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.5 }}
                 >
-                  <a href="/login" className="block w-full text-center py-2 mb-2 rounded-lg border border-slate-300 hover:bg-slate-50">Login</a>
-                  <Button className="w-full bg-gradient-to-r from-primary to-slate-800 text-white" asChild>
+                  <a href="/login" className="block w-full text-center py-3 mb-2 rounded-lg border border-slate-300 hover:bg-slate-50">Login</a>
+                  <Button className="w-full bg-gradient-to-r from-primary to-slate-800 text-white py-3" asChild>
                     <a href="/user-setup">Get Started</a>
                   </Button>
                 </motion.div>
