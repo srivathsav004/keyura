@@ -53,7 +53,7 @@ const Header = () => {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
-            {['Features', 'Security', 'How It Works', 'Pricing', 'FAQ'].map((item, index) => (
+            {['Features', 'Security', 'How It Works', 'Gas Fees', 'FAQ'].map((item, index) => (
               <motion.button
                 key={item}
                 className="text-slate-700 hover:text-primary transition-colors relative group"
@@ -107,7 +107,7 @@ const Header = () => {
               className="md:hidden fixed inset-x-0 top-16 z-40"
             >
               <div className="bg-white/95 backdrop-blur-md border-t border-slate-200 shadow-lg py-4 space-y-4 px-4">
-                {['Features', 'Security', 'How It Works', 'Pricing', 'FAQ'].map((item, index) => (
+                {['Features', 'Security', 'How It Works', 'Gas Fees', 'FAQ'].map((item, index) => (
                   <motion.button
                     key={item}
                     className="block w-full text-left text-slate-700 hover:text-primary transition-colors py-3 text-base"

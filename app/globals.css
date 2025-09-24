@@ -79,4 +79,8 @@
   body {
     @apply bg-background text-foreground;
   }
+  /* Ensure in-page anchors account for fixed header height */
+  section[id] {
+    scroll-margin-top: 5rem; /* ~80px for navbar */
+  }
 }
