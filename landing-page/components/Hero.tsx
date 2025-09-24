@@ -53,9 +53,9 @@ const Hero = () => {
   ));
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-slate-50 to-white">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-slate-50 to-white pt-10 md:pt-12">
       {/* Floating Background Elements */}
-      <div className="absolute inset-0">
+      <div className="absolute inset-0 pointer-events-none select-none">
         {floatingElements}
       </div>
 
