@@ -61,7 +61,7 @@ const Security = () => {
     visible: {
       opacity: 1,
       scale: 1,
-      transition: { duration: 0.5, ease: "easeOut" },
+      transition: { duration: 0.5 },
     },
   };
 
@@ -179,8 +179,7 @@ const Security = () => {
                 }}
                 transition={{ 
                   duration: 4, 
-                  repeat: Infinity,
-                  ease: "easeInOut"
+                  repeat: Infinity
                 }}
                 className="w-32 h-32 mx-auto bg-gradient-to-r from-emerald-500 to-primary rounded-full flex items-center justify-center mb-6"
               >

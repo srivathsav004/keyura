@@ -49,7 +49,7 @@ const HowItWorks = () => {
     visible: {
       opacity: 1,
       x: 0,
-      transition: { duration: 0.6, ease: "easeOut" },
+      transition: { duration: 0.6 },
     },
   };
 
@@ -84,7 +84,7 @@ const HowItWorks = () => {
               className="absolute top-1/2 left-0 h-0.5 bg-gradient-to-r from-blue-500 to-orange-500 -translate-y-0.5"
               initial={{ width: 0 }}
               animate={isInView ? { width: '100%' } : {}}
-              transition={{ duration: 2, ease: "easeInOut", delay: 0.5 }}
+              transition={{ duration: 2, delay: 0.5 }}
             />
 
             {/* Steps Grid */}

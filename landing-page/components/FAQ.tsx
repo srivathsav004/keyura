@@ -83,7 +83,7 @@ const FAQ = () => {
                 </h3>
                 <motion.div
                   animate={{ rotate: openIndex === index ? 180 : 0 }}
-                  transition={{ duration: 0.3, ease: "easeInOut" }}
+                  transition={{ duration: 0.3 }}
                   className="flex-shrink-0"
                 >
                   <ChevronDown className="h-5 w-5 text-slate-500" />
@@ -97,7 +97,7 @@ const FAQ = () => {
                     initial={{ height: 0, opacity: 0 }}
                     animate={{ height: "auto", opacity: 1 }}
                     exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.3, ease: "easeInOut" }}
+                    transition={{ duration: 0.3 }}
                     className="overflow-hidden"
                   >
                     <div className="px-6 pb-6 pt-0">

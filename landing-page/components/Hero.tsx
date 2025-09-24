@@ -36,7 +36,6 @@ const Hero = () => {
       transition={{
         duration: 6 + i,
         repeat: Infinity,
-        ease: "easeInOut",
       }}
       style={{
         left: `${20 + i * 15}%`,
