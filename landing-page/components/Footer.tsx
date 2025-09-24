@@ -11,7 +11,7 @@ const Footer = () => {
       { name: 'Features', href: '#features' },
       { name: 'Security', href: '#security' },
       { name: 'How It Works', href: '#how-it-works' },
-      { name: 'Pricing', href: '#pricing' },
+      { name: 'Gas', href: '#pricing' },
     ],
     Support: [
       { name: 'FAQ', href: '#faq' },
