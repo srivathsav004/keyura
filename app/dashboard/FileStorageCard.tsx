@@ -5,6 +5,8 @@ import { Label } from "@/components/ui/label";
 import { Upload, Database, Lock } from "lucide-react";
 import { useRef, useState } from "react";
 import { createFileEntry } from "@/services/entries";
+import { getUserContract } from "@/services/contracts";
+import { ABI } from "./contractBytecode";
 
 type Props = {
   userid: number;
@@ -78,6 +80,24 @@ export default function FileStorageCard({ userid, contractid, onStored }: Props)
       // XOR-encrypt CID for on-chain style storage
       const encrypted_cid = xorEncryptToBase64(cid, password);
 
+      // 1) Resolve user's contract address
+      const contractInfo = await getUserContract(userid);
+      if (!contractInfo || !contractInfo.contract_address) {
+        throw new Error("No contract address found. Please deploy your contract in Settings.");
+      }
+
+      // 2) Send on-chain tx first
+      if (!(window as any).ethereum) throw new Error("MetaMask not detected");
+      const { BrowserProvider, Contract } = await import("ethers");
+      const provider = new BrowserProvider((window as any).ethereum);
+      await provider.send("eth_requestAccounts", []);
+      const signer = await provider.getSigner();
+      const contract = new Contract(contractInfo.contract_address, ABI as any, signer);
+      const tx = await contract.addEntry(fileName || file.name, encrypted_cid, file.type || "application/octet-stream", { type: 0 });
+      const receipt = await tx.wait();
+      const txHash: string = tx.hash || receipt?.hash;
+
+      // 3) After success, call backend with tx hash
       await createFileEntry({
         userid,
         contractid,
@@ -87,6 +107,7 @@ export default function FileStorageCard({ userid, contractid, onStored }: Props)
         file_size: file.size,
         encrypted_cid,
         ipfs_cid: cid,
+        transaction_hash: txHash,
       });
 
       setFileName("");

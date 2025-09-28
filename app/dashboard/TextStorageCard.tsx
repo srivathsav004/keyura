@@ -6,6 +6,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Shield, FileText, Lock } from "lucide-react";
 import { useState } from "react";
 import { createTextEntry } from "@/services/entries";
+import { getUserContract } from "@/services/contracts";
+import { ABI } from "./contractBytecode";
 
 type Props = {
   userid: number;
@@ -49,7 +51,26 @@ export default function TextStorageCard({ userid, contractid, onStored }: Props)
     try {
       setBusy(true);
       const encrypted = await encryptAesGcmToBase64(textData, password);
-      await createTextEntry({ userid, contractid, entry_name: entryName, encrypted_data: encrypted });
+
+      // 1) Resolve user's contract address
+      const contractInfo = await getUserContract(userid);
+      if (!contractInfo || !contractInfo.contract_address) {
+        throw new Error("No contract address found. Please deploy your contract in Settings.");
+      }
+
+      // 2) Send on-chain tx first
+      if (!(window as any).ethereum) throw new Error("MetaMask not detected");
+      const { BrowserProvider, Contract } = await import("ethers");
+      const provider = new BrowserProvider((window as any).ethereum);
+      await provider.send("eth_requestAccounts", []);
+      const signer = await provider.getSigner();
+      const contract = new Contract(contractInfo.contract_address, ABI as any, signer);
+      const tx = await contract.addEntry(entryName, encrypted, "", { type: 0 });
+      const receipt = await tx.wait();
+      const txHash: string = tx.hash || receipt?.hash;
+
+      // 3) Only after success, write to backend with tx hash
+      await createTextEntry({ userid, contractid, entry_name: entryName, encrypted_data: encrypted, transaction_hash: txHash });
       setEntryName("");
       setTextData("");
       setPassword("");
