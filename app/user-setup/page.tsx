@@ -8,27 +8,10 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardHeader, CardContent, CardTitle, CardDescription } from '@/components/ui/card';
 import { Wallet, Copy, Shield, KeyRound } from 'lucide-react';
+import { createUser } from '@/services/auth';
 
 type InjectedProvider = any;
 
-type StoredUserProfile = {
-  walletName: string;
-  address: string;
-  passwordHash: string;
-  salt: string;
-};
-
-function bytesToHex(bytes: Uint8Array): string {
-  return Array.from(bytes)
-    .map((b) => b.toString(16).padStart(2, '0'))
-    .join('');
-}
-
-async function sha256Hex(data: Uint8Array): Promise<string> {
-  const ab = data.buffer.slice(data.byteOffset, data.byteOffset + data.byteLength) as ArrayBuffer;
-  const digest = await crypto.subtle.digest('SHA-256', ab);
-  return bytesToHex(new Uint8Array(digest));
-}
 
 export default function UserSetupPage() {
   const router = useRouter();
@@ -102,23 +85,16 @@ export default function UserSetupPage() {
     if (!connectedAddress) return setError('Please connect your wallet first.');
     if (password.length < 8) return setError('Password must be at least 8 characters.');
     if (password !== confirmPassword) return setError('Passwords do not match.');
-
-    const salt = new Uint8Array(16);
-    crypto.getRandomValues(salt);
-    const pwdBytes = new TextEncoder().encode(password);
-    const salted = new Uint8Array(salt.length + pwdBytes.length);
-    salted.set(salt);
-    salted.set(pwdBytes, salt.length);
-
-    const passwordHash = await sha256Hex(salted);
-    const profile: StoredUserProfile = {
-      walletName: 'MetaMask',
-      address: connectedAddress,
-      passwordHash,
-      salt: bytesToHex(salt),
-    };
-    localStorage.setItem('keyura_user', JSON.stringify(profile));
-    router.push('/login');
+    try {
+      setBusy(true);
+      // Send to backend; backend will hash using bcrypt and store in DB
+      await createUser({ wallet_address: connectedAddress, password });
+      router.push('/login');
+    } catch (e: any) {
+      setError(e?.message || 'Failed to create profile.');
+    } finally {
+      setBusy(false);
+    }
   };
 
   const copyAddress = async () => {
