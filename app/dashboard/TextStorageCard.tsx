@@ -3,11 +3,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Shield, FileText, Lock } from "lucide-react";
+import { Shield, FileText, Lock, Loader2 } from "lucide-react";
 import { useState } from "react";
 import { createTextEntry } from "@/services/entries";
 import { getUserContract } from "@/services/contracts";
 import { ABI } from "./contractBytecode";
+import { keccak256, toUtf8Bytes } from "ethers";
 
 type Props = {
   userid: number;
@@ -41,6 +42,7 @@ export default function TextStorageCard({ userid, contractid, onStored }: Props)
   const [password, setPassword] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [status, setStatus] = useState<string>("");
 
   const handleStore = async () => {
     setError(null);
@@ -50,9 +52,11 @@ export default function TextStorageCard({ userid, contractid, onStored }: Props)
     }
     try {
       setBusy(true);
+      setStatus("Encrypting...");
       const encrypted = await encryptAesGcmToBase64(textData, password);
 
       // 1) Resolve user's contract address
+      setStatus("Resolving contract...");
       const contractInfo = await getUserContract(userid);
       if (!contractInfo || !contractInfo.contract_address) {
         throw new Error("No contract address found. Please deploy your contract in Settings.");
@@ -62,21 +66,63 @@ export default function TextStorageCard({ userid, contractid, onStored }: Props)
       if (!(window as any).ethereum) throw new Error("MetaMask not detected");
       const { BrowserProvider, Contract } = await import("ethers");
       const provider = new BrowserProvider((window as any).ethereum);
+      setStatus("Connecting wallet...");
       await provider.send("eth_requestAccounts", []);
       const signer = await provider.getSigner();
+      // Ensure Polygon Amoy
+      try {
+        const net = await provider.getNetwork();
+        if (Number(net.chainId) !== 80002) {
+          setStatus("Switching to Polygon Amoy...");
+          await (window as any).ethereum.request({
+            method: "wallet_switchEthereumChain",
+            params: [{ chainId: "0x13882" }],
+          });
+        }
+      } catch (switchErr) {
+        try {
+          await (window as any).ethereum.request({
+            method: "wallet_addEthereumChain",
+            params: [
+              {
+                chainId: "0x13882",
+                chainName: "Polygon Amoy",
+                nativeCurrency: { name: "POL", symbol: "POL", decimals: 18 },
+                rpcUrls: ["https://rpc-amoy.polygon.technology"],
+                blockExplorerUrls: ["https://amoy.polygonscan.com"],
+              },
+            ],
+          });
+        } catch (addErr) {
+          console.error("Network switch/add failed", addErr);
+          setError("Please switch your wallet to Polygon Amoy testnet and try again.");
+          setStatus("");
+          return;
+        }
+      }
+      const addrLower = (await signer.getAddress()).toLowerCase();
+      const keyHash = keccak256(toUtf8Bytes(`${addrLower}:${password}:secure_salt_v1`));
+      const payload = JSON.stringify({ h: keyHash, d: encrypted });
+
       const contract = new Contract(contractInfo.contract_address, ABI as any, signer);
-      const tx = await contract.addEntry(entryName, encrypted, "", { type: 0 });
+      setStatus("Sending transaction...");
+      const tx = await contract.addEntry(entryName, payload, "");
+      setStatus("Waiting for confirmation...");
       const receipt = await tx.wait();
       const txHash: string = tx.hash || receipt?.hash;
 
       // 3) Only after success, write to backend with tx hash
-      await createTextEntry({ userid, contractid, entry_name: entryName, encrypted_data: encrypted, transaction_hash: txHash });
+      setStatus("Saving to backend...");
+      await createTextEntry({ userid, contractid, entry_name: entryName, encrypted_data: payload, transaction_hash: txHash });
       setEntryName("");
       setTextData("");
       setPassword("");
+      setStatus("Stored successfully.");
       onStored?.();
     } catch (e: any) {
+      console.error("Text store failed", e);
       setError(e?.message || "Failed to store text");
+      setStatus("");
     } finally {
       setBusy(false);
     }
@@ -110,10 +156,11 @@ export default function TextStorageCard({ userid, contractid, onStored }: Props)
         </div>
         {error && <div className="text-sm text-red-600">{error}</div>}
 
-        <Button onClick={handleStore} disabled={busy} className="w-full bg-emerald-600 hover:bg-emerald-700">
-          <Lock className="h-4 w-4 mr-2" />
-          {busy ? "Storing..." : "Encrypt & Store Text"}
+        <Button onClick={handleStore} disabled={busy} className="w-full bg-emerald-600 hover:bg-emerald-700" aria-busy={busy}>
+          {busy ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Lock className="h-4 w-4 mr-2" />}
+          {busy ? "Processing..." : "Encrypt & Store Text"}
         </Button>
+        {status && <div className="text-xs text-emerald-700">{status}</div>}
 
         <div className="text-xs text-slate-500 bg-slate-50 p-3 rounded-lg">
           <Shield className="h-3 w-3 inline mr-1" />
