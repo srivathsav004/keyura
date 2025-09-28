@@ -5,7 +5,7 @@ import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
 
-export default function SettingsSection() {
+export default function SettingsSection({ contractAddress }: { contractAddress?: string }) {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
       <Card className="border-slate-200">
@@ -17,7 +17,7 @@ export default function SettingsSection() {
           <div className="space-y-2">
             <Label>Current Contract Address</Label>
             <div className="flex space-x-2">
-              <Input value="0x742d35Cc6634C0532925a3b8D4C9db..." readOnly className="font-mono text-sm" />
+              <Input value={contractAddress || "Not set"} readOnly className="font-mono text-sm" />
               <Button size="sm" variant="outline">Copy</Button>
             </div>
           </div>
