@@ -13,6 +13,7 @@ export type TextEntry = {
   entry_name: string;
   encrypted_data: string;
   transaction_hash?: string | null;
+  created_at?: string | null;
 };
 
 export type FileEntry = {
@@ -26,6 +27,7 @@ export type FileEntry = {
   encrypted_cid: string;
   ipfs_cid?: string | null;
   transaction_hash?: string | null;
+  created_at?: string | null;
 };
 
 export async function getStats(userid: number) {
