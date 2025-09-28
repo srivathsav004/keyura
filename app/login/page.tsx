@@ -8,66 +8,31 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import { Wallet, Lock, KeyRound } from 'lucide-react';
+import { login as loginApi } from '@/services/auth';
 
-type StoredUserProfile = {
-  walletName: string;
-  address: string;
-  passwordHash: string;
-  salt: string;
-};
-
-function hexToBytes(hex: string): Uint8Array {
-  const bytes = new Uint8Array(hex.length / 2);
-  for (let i = 0; i < bytes.length; i++) {
-    bytes[i] = parseInt(hex.substr(i * 2, 2), 16);
-  }
-  return bytes;
-}
-
-async function sha256Hex(data: Uint8Array): Promise<string> {
-  const ab = data.buffer.slice(data.byteOffset, data.byteOffset + data.byteLength) as ArrayBuffer;
-  const digest = await crypto.subtle.digest('SHA-256', ab);
-  return Array.from(new Uint8Array(digest))
-    .map((b) => b.toString(16).padStart(2, '0'))
-    .join('');
-}
+// Backend-based authentication
 
 export default function LoginPage() {
   const router = useRouter();
   const [password, setPassword] = useState('');
   const [address, setAddress] = useState('');
   const [error, setError] = useState('');
-
-  const profile: StoredUserProfile | null = (() => {
-    try {
-      const raw = typeof window !== 'undefined' ? localStorage.getItem('keyura_user') : null;
-      return raw ? (JSON.parse(raw) as StoredUserProfile) : null;
-    } catch {
-      return null;
-    }
-  })();
+  const [busy, setBusy] = useState(false);
 
   const login = async () => {
     setError('');
-    if (!profile) {
-      setError('No user profile found. Please create one.');
-      return;
-    }
-    if (!address || address.toLowerCase() !== profile.address.toLowerCase()) {
-      setError('Wallet address does not match the registered address.');
-      return;
-    }
-    const salted = new Uint8Array(hexToBytes(profile.salt).length + new TextEncoder().encode(password).length);
-    const saltBytes = hexToBytes(profile.salt);
-    const pwdBytes = new TextEncoder().encode(password);
-    salted.set(saltBytes);
-    salted.set(pwdBytes, saltBytes.length);
-    const hash = await sha256Hex(salted);
-    if (hash === profile.passwordHash) {
-      localStorage.setItem('keyura_session', JSON.stringify({ address: profile.address, ts: Date.now() }));
+    if (!address) return setError('Please enter your wallet address.');
+    if (!password) return setError('Please enter your password.');
+    try {
+      setBusy(true);
+      const res = await loginApi({ wallet_address: address, password });
+      // Store minimal session locally if needed
+      localStorage.setItem('keyura_session', JSON.stringify({ address: res.wallet_address, userid: res.userid, ts: Date.now() }));
       router.push('/');
-    } else {
-      setError('Invalid password.');
+    } catch (e: any) {
+      setError(e?.message || 'Login failed');
+    } finally {
+      setBusy(false);
     }
   };
 
@@ -114,7 +79,7 @@ export default function LoginPage() {
                   />
                 </div>
                 {error && <p className="text-red-600 text-sm">{error}</p>}
-                <Button onClick={login} className="bg-gradient-to-r from-primary to-slate-800 text-white w-full">Login</Button>
+                <Button onClick={login} disabled={busy} className="bg-gradient-to-r from-primary to-slate-800 text-white w-full">{busy ? 'Logging in...' : 'Login'}</Button>
                 <div className="text-center text-sm text-slate-600">
                   First time here? <Link className="underline font-medium" href="/user-setup">Create profile</Link>
                 </div>
