@@ -8,6 +8,7 @@ export async function apiRequest<T>(
   const resp = await fetch(url, {
     headers: {
       'Content-Type': 'application/json',
+      'X-Keyura-API': '1',
       ...(options.headers || {}),
     },
     credentials: 'include',

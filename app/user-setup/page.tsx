@@ -219,7 +219,7 @@ export default function UserSetupPage() {
               >
                 Create Profile
               </Button>
-              <Link href="/" className="self-center text-sm text-slate-600 underline">
+              <Link href="/" prefetch={false} className="self-center text-sm text-slate-600 underline">
                 Cancel
               </Link>
             </div>

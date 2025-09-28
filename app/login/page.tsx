@@ -81,7 +81,7 @@ export default function LoginPage() {
                 {error && <p className="text-red-600 text-sm">{error}</p>}
                 <Button onClick={login} disabled={busy} className="bg-gradient-to-r from-primary to-slate-800 text-white w-full">{busy ? 'Logging in...' : 'Login'}</Button>
                 <div className="text-center text-sm text-slate-600">
-                  First time here? <Link className="underline font-medium" href="/user-setup">Create profile</Link>
+                  First time here? <Link className="underline font-medium" href="/user-setup" prefetch={false}>Create profile</Link>
                 </div>
               </div>
             </CardContent>
