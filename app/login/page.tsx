@@ -28,7 +28,10 @@ export default function LoginPage() {
       const res = await loginApi({ wallet_address: address, password });
       // Store minimal session locally if needed
       localStorage.setItem('keyura_session', JSON.stringify({ address: res.wallet_address, userid: res.userid, ts: Date.now() }));
-      router.push('/');
+      // Set cookie with userid for dashboard access (expires in 7 days)
+      const maxAge = 7 * 24 * 60 * 60;
+      document.cookie = `userid=${encodeURIComponent(String(res.userid))}; Path=/; Max-Age=${maxAge}`;
+      router.push('/dashboard');
     } catch (e: any) {
       setError(e?.message || 'Login failed');
     } finally {
