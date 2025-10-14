@@ -13,7 +13,6 @@ const nav = [
     children: [
       { label: "What is Keyura", href: "/documentation#what-is-keyura" },
       { label: "Prerequisites", href: "/documentation#prerequisites" },
-      { label: "Quick Start Guide", href: "/documentation#quick-start" },
     ],
   },
   {
@@ -88,7 +87,6 @@ export function Sidebar() {
       "getting-started",
       "what-is-keyura",
       "prerequisites",
-      "quick-start",
       "security",
       "encryption",
       "blockchain",
@@ -155,7 +153,7 @@ export function Sidebar() {
   const isSectionActive = (sectionId: string) => {
     // A section is active if the current activeId is itself or one of its children
     const sectionChildrenMap: Record<string, string[]> = {
-      "getting-started": ["what-is-keyura", "prerequisites", "quick-start"],
+      "getting-started": ["what-is-keyura", "prerequisites"],
       security: ["encryption", "blockchain", "privacy"],
       "using-keyura": ["wallet", "deploy", "files", "text", "access"],
       "technical-details": ["contracts", "ipfs", "types"],
