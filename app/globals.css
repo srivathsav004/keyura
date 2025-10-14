@@ -73,6 +73,9 @@
 }
 
 @layer base {
+  html {
+    scroll-behavior: smooth;
+  }
   * {
     @apply border-border;
   }
@@ -81,6 +84,6 @@
   }
   /* Ensure in-page anchors account for fixed header height */
   section[id] {
-    scroll-margin-top: 5rem; /* ~80px for navbar */
+    scroll-margin-top: 6rem; /* leave room for top header */
   }
 }
