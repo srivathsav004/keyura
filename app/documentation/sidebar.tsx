@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useEffect, useMemo, useState } from "react";
 import { ChevronRight, Lock, FileText, Wallet, Layers, Cpu, HelpCircle, Phone, Shield, Folder, BookOpen, Boxes, DollarSign } from "lucide-react";
 
 const nav = [
@@ -80,11 +81,96 @@ const nav = [
 
 export function Sidebar() {
   const pathname = usePathname();
+
+  // Scrollspy: observe section headings on the single /documentation page
+  const allIds = useMemo(
+    () => [
+      "getting-started",
+      "what-is-keyura",
+      "prerequisites",
+      "quick-start",
+      "security",
+      "encryption",
+      "blockchain",
+      "privacy",
+      "using-keyura",
+      "wallet",
+      "deploy",
+      "files",
+      "text",
+      "access",
+      "technical-details",
+      "contracts",
+      "ipfs",
+      "types",
+      "pricing",
+      "breakdown",
+      "gas",
+      "payment",
+      "faq",
+      "common",
+      "troubleshooting",
+      "best-practices",
+      "support",
+      "contact",
+      "community",
+    ],
+    []
+  );
+
+  const [activeId, setActiveId] = useState<string>("getting-started");
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const elements = allIds
+      .map((id) => document.getElementById(id))
+      .filter(Boolean) as HTMLElement[];
+    if (!elements.length) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        // Pick the entry that is most visible
+        const visible = entries
+          .filter((e) => e.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+        if (visible[0]?.target?.id) setActiveId(visible[0].target.id);
+      },
+      {
+        root: null,
+        rootMargin: "-20% 0px -60% 0px",
+        threshold: [0.1, 0.25, 0.5, 0.75, 1],
+      }
+    );
+
+    elements.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, [allIds]);
+
+  const isActive = (href: string) => {
+    const hash = href.split("#")[1];
+    if (!hash) return false;
+    return activeId === hash;
+  };
+
+  const isSectionActive = (sectionId: string) => {
+    // A section is active if the current activeId is itself or one of its children
+    const sectionChildrenMap: Record<string, string[]> = {
+      "getting-started": ["what-is-keyura", "prerequisites", "quick-start"],
+      security: ["encryption", "blockchain", "privacy"],
+      "using-keyura": ["wallet", "deploy", "files", "text", "access"],
+      "technical-details": ["contracts", "ipfs", "types"],
+      pricing: ["breakdown", "gas", "payment"],
+      faq: ["common", "troubleshooting", "best-practices"],
+      support: ["contact", "community"],
+    };
+    return activeId === sectionId || (sectionChildrenMap[sectionId] || []).includes(activeId);
+  };
+
   return (
     <nav className="p-0">
       <ul className="space-y-1">
         {nav.map((item) => {
-          const active = pathname === item.href;
+          const active = isSectionActive(item.href.split("#")[1] || "");
           return (
             <li key={item.href}>
               <Link
@@ -106,7 +192,9 @@ export function Sidebar() {
                     <li key={sub.href}>
                       <Link
                         href={sub.href}
-                        className="block rounded-none px-4 py-1.5 text-xs text-slate-600 hover:bg-slate-100"
+                        className={`block rounded-none px-4 py-1.5 text-xs hover:bg-slate-100 ${
+                          isActive(sub.href) ? "text-primary" : "text-slate-600"
+                        }`}
                       >
                         {sub.label}
                       </Link>
