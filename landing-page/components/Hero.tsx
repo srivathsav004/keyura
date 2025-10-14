@@ -139,9 +139,8 @@ const Hero = () => {
                 className="border-2 border-primary text-primary hover:bg-primary hover:text-white px-8 py-4 text-lg rounded-xl group transition-all duration-300"
                 asChild
               >
-                <a href="#how-it-works">
-                  <Play className="mr-2 h-5 w-5 group-hover:scale-110 transition-transform" />
-                  See How It Works
+                <a href="/documentation">
+                  Documentation
                 </a>
               </Button>
             </motion.div>
