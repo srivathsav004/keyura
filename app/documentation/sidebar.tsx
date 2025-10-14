@@ -49,7 +49,7 @@ const nav = [
     ],
   },
   {
-    label: "Pricing & Fees",
+    label: "Gas Fee Estimations",
     icon: DollarSign,
     href: "/documentation#pricing",
     children: [
