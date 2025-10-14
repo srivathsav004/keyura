@@ -9,7 +9,7 @@ import Support from "./support";
 export default function DocumentationHome() {
   return (
     <div className="max-w-none">
-      <h1 className="text-3xl font-bold text-primary">Keyura Documentation</h1>
+      {/* <h1 className="text-3xl font-bold text-primary">Keyura Documentation</h1> */}
       <div className="space-y-14">
         <GettingStarted />
         <Security />
