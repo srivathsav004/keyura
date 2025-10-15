@@ -260,24 +260,18 @@ export default function UsingKeyura() {
               {[
                 { 
                   n: 1, 
-                  t: "Navigate to Contract Settings", 
-                  d: "Go to the Contract Settings tab in your dashboard",
-                  icon: <Settings className="h-4 w-4" />
-                },
-                { 
-                  n: 2, 
                   t: "Click Deploy Contract", 
                   d: "Initiate the smart contract deployment process",
                   icon: <ArrowRight className="h-4 w-4" />
                 },
                 { 
-                  n: 3, 
+                  n: 2, 
                   t: "Confirm MetaMask Transaction", 
                   d: "Approve the deployment transaction in your MetaMask wallet",
                   icon: <Wallet className="h-4 w-4" />
                 },
                 { 
-                  n: 4, 
+                  n: 3, 
                   t: "Contract Address Generated", 
                   d: "Your unique vault contract address will be displayed",
                   icon: <CheckCircle className="h-4 w-4" />
@@ -321,7 +315,7 @@ export default function UsingKeyura() {
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="w-1.5 h-1.5 bg-orange-500 rounded-full mt-2 flex-shrink-0"></span>
-                  <span>Typical deployment cost: 0.01–0.05 POL</span>
+                  <span>Typical deployment cost: 0.2–0.3 POL</span>
                 </li>
               </ul>
             </CardContent>
@@ -440,7 +434,7 @@ export default function UsingKeyura() {
                   </li>
                   <li className="flex gap-3">
                     <Badge variant="outline" className="text-xs min-w-fit">2</Badge>
-                    <span>Click to select your file (max 25 MB)</span>
+                    <span>Click to select your file (max 2 MB)</span>
                   </li>
                   <li className="flex gap-3">
                     <Badge variant="outline" className="text-xs min-w-fit">3</Badge>
@@ -488,33 +482,6 @@ export default function UsingKeyura() {
               </CardContent>
             </Card>
           </div>
-
-          <Card className="border-border/50">
-            <CardHeader className="pb-3">
-              <CardTitle className="text-base font-medium">Supported File Types & Best Practices</CardTitle>
-            </CardHeader>
-            <CardContent className="pt-0">
-              <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
-                <div>
-                  <p className="text-sm font-medium text-foreground mb-2">Supported Formats</p>
-                  <div className="flex flex-wrap gap-1">
-                    {['PDF', 'JPG', 'PNG', 'DOC', 'DOCX', 'TXT', 'MP4', 'MP3', 'ZIP'].map((format) => (
-                      <Badge key={format} variant="secondary" className="text-xs">{format}</Badge>
-                    ))}
-                  </div>
-                </div>
-                <div>
-                  <p className="text-sm font-medium text-foreground mb-2">Best Practices</p>
-                                    <ul className="text-sm text-muted-foreground space-y-1">
-                    <li>• Use descriptive file names</li>
-                    <li>• Maximum 25 MB per file</li>
-                    <li>• Unique passwords for sensitive files</li>
-                    <li>• Consider using a password manager</li>
-                  </ul>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
         </div>
 
         {/* Text Storage */}
@@ -585,14 +552,6 @@ export default function UsingKeyura() {
               </CardContent>
             </Card>
           </div>
-
-          <Alert>
-            <AlertTriangle className="h-4 w-4" />
-            <AlertDescription>
-              <strong>Security Recommendation:</strong> For highly critical secrets like seed phrases, consider using 
-              hardware wallets or dedicated secure storage solutions as an additional security layer.
-            </AlertDescription>
-          </Alert>
         </div>
 
         {/* Screenshot */}
@@ -734,66 +693,6 @@ export default function UsingKeyura() {
           </Card>
         </div>
 
-        <div className="grid gap-6 grid-cols-1 lg:grid-cols-2">
-          <Card className="border-border/50">
-            <CardHeader className="pb-3">
-              <CardTitle className="text-base font-medium flex items-center gap-3">
-                <Upload className="h-5 w-5 text-blue-600" />
-                File Decryption Features
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="pt-0">
-              <ul className="text-sm text-muted-foreground space-y-2">
-                <li className="flex items-start gap-2">
-                  <span className="w-1.5 h-1.5 bg-blue-500 rounded-full mt-2 flex-shrink-0"></span>
-                  <span>Automatic download of decrypted original files</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="w-1.5 h-1.5 bg-green-500 rounded-full mt-2 flex-shrink-0"></span>
-                  <span>Preview support for images and documents</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="w-1.5 h-1.5 bg-purple-500 rounded-full mt-2 flex-shrink-0"></span>
-                  <span>File metadata display (size, type, upload date)</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="w-1.5 h-1.5 bg-orange-500 rounded-full mt-2 flex-shrink-0"></span>
-                  <span>Batch operations for multiple files</span>
-                </li>
-              </ul>
-            </CardContent>
-          </Card>
-
-          <Card className="border-border/50">
-            <CardHeader className="pb-3">
-              <CardTitle className="text-base font-medium flex items-center gap-3">
-                <FileText className="h-5 w-5 text-green-600" />
-                Text Decryption Features
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="pt-0">
-              <ul className="text-sm text-muted-foreground space-y-2">
-                <li className="flex items-start gap-2">
-                  <span className="w-1.5 h-1.5 bg-green-500 rounded-full mt-2 flex-shrink-0"></span>
-                  <span>Secure popup window for text viewing</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="w-1.5 h-1.5 bg-blue-500 rounded-full mt-2 flex-shrink-0"></span>
-                  <span>One-click copy to clipboard functionality</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="w-1.5 h-1.5 bg-purple-500 rounded-full mt-2 flex-shrink-0"></span>
-                  <span>Export as TXT file option</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="w-1.5 h-1.5 bg-orange-500 rounded-full mt-2 flex-shrink-0"></span>
-                  <span>Search functionality across all entries</span>
-                </li>
-              </ul>
-            </CardContent>
-          </Card>
-        </div>
-
         <Card className="border-border/50">
           <CardHeader className="pb-3">
             <CardTitle className="text-base font-medium">Technical Decryption Flow</CardTitle>
@@ -897,35 +796,6 @@ export default function UsingKeyura() {
                 <li className="flex items-start gap-2">
                   <span className="w-1.5 h-1.5 bg-red-500 rounded-full mt-2 flex-shrink-0"></span>
                   <span>Keep your MetaMask seed phrase secure and backed up</span>
-                </li>
-              </ul>
-            </CardContent>
-          </Card>
-
-          <Card className="border-green-200 dark:border-green-800">
-            <CardHeader className="pb-3">
-              <CardTitle className="text-base font-medium flex items-center gap-3 text-green-700 dark:text-green-400">
-                <Shield className="h-5 w-5" />
-                Best Practices
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="pt-0">
-              <ul className="text-sm text-green-600 dark:text-green-400 space-y-2">
-                <li className="flex items-start gap-2">
-                  <span className="w-1.5 h-1.5 bg-green-500 rounded-full mt-2 flex-shrink-0"></span>
-                  <span>Use a reputable password manager for encryption passwords</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="w-1.5 h-1.5 bg-green-500 rounded-full mt-2 flex-shrink-0"></span>
-                  <span>Create unique, strong passwords for sensitive entries</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="w-1.5 h-1.5 bg-green-500 rounded-full mt-2 flex-shrink-0"></span>
-                  <span>Regularly backup your important passwords securely</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="w-1.5 h-1.5 bg-green-500 rounded-full mt-2 flex-shrink-0"></span>
-                  <span>Keep your browser and MetaMask extension updated</span>
                 </li>
               </ul>
             </CardContent>
