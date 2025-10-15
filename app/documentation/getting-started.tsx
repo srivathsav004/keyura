@@ -200,7 +200,7 @@ export default function GettingStarted() {
             </CardHeader>
             <CardContent className="space-y-3">
               <p className="text-sm text-muted-foreground leading-relaxed">
-                You'll need POL tokens for gas fees to deploy your contract and sign transactions. A small amount (~0.2-0.3 POL) is sufficient for getting started.
+                You'll need POL for gas fees to deploy your contract and sign transactions. A small amount (~0.2-0.3 POL) is sufficient for getting started.
               </p>
               <Alert>
                 <AlertDescription className="text-xs">
