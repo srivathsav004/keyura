@@ -120,6 +120,16 @@ export function Sidebar() {
 
   useEffect(() => {
     if (typeof window === "undefined") return;
+    // Initialize from current hash on mount for direct navigations
+    const initHash = window.location.hash?.replace("#", "");
+    if (initHash) setActiveId(initHash);
+
+    // Keep in sync with hash changes (e.g., back/forward navigation)
+    const onHashChange = () => {
+      const h = window.location.hash?.replace("#", "");
+      if (h) setActiveId(h);
+    };
+    window.addEventListener("hashchange", onHashChange);
     const elements = allIds
       .map((id) => document.getElementById(id))
       .filter(Boolean) as HTMLElement[];
@@ -135,13 +145,16 @@ export function Sidebar() {
       },
       {
         root: null,
-        rootMargin: "-20% 0px -60% 0px",
-        threshold: [0.1, 0.25, 0.5, 0.75, 1],
+        rootMargin: "-25% 0px -65% 0px",
+        threshold: [0, 0.25, 0.5, 0.75, 1],
       }
     );
 
     elements.forEach((el) => observer.observe(el));
-    return () => observer.disconnect();
+    return () => {
+      window.removeEventListener("hashchange", onHashChange);
+      observer.disconnect();
+    };
   }, [allIds]);
 
   const isActive = (href: string) => {
@@ -150,11 +163,24 @@ export function Sidebar() {
     return activeId === hash;
   };
 
+  const smoothNavigate = (href: string) => {
+    if (typeof window === "undefined") return;
+    const hash = href.split("#")[1];
+    if (!hash) return;
+    const el = document.getElementById(hash);
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
+      // update hash without reloading
+      history.pushState(null, "", `#${hash}`);
+      setActiveId(hash);
+    }
+  };
+
   const isSectionActive = (sectionId: string) => {
     // A section is active if the current activeId is itself or one of its children
     const sectionChildrenMap: Record<string, string[]> = {
       "getting-started": ["what-is-keyura", "prerequisites"],
-      security: ["encryption", "blockchain", "privacy"],
+      "security": ["encryption", "blockchain", "privacy"],
       "using-keyura": ["wallet", "deploy", "files", "text", "access"],
       // "technical-details": ["contracts", "ipfs", "types"],
       // pricing: ["breakdown", "gas", "payment"],
@@ -173,6 +199,14 @@ export function Sidebar() {
             <li key={item.href}>
               <Link
                 href={item.href}
+                onClick={(e) => {
+                  // Smooth-scroll within the documentation page
+                  if (item.href.includes("#")) {
+                    e.preventDefault();
+                    smoothNavigate(item.href);
+                  }
+                }}
+                aria-current={active ? "true" : undefined}
                 className={`flex items-center justify-between rounded-none px-4 py-2 text-sm transition-colors ${
                   active
                     ? "bg-primary/10 text-primary"
@@ -190,6 +224,13 @@ export function Sidebar() {
                     <li key={sub.href}>
                       <Link
                         href={sub.href}
+                        onClick={(e) => {
+                          if (sub.href.includes("#")) {
+                            e.preventDefault();
+                            smoothNavigate(sub.href);
+                          }
+                        }}
+                        aria-current={isActive(sub.href) ? "true" : undefined}
                         className={`block rounded-none px-4 py-1.5 text-xs hover:bg-slate-100 ${
                           isActive(sub.href) ? "text-primary" : "text-slate-600"
                         }`}
