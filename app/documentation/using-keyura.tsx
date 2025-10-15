@@ -762,56 +762,7 @@ export default function UsingKeyura() {
           </Card>
         </div>
       </div>
-
-      {/* Security Reminders */}
-      <div className="space-y-6">
-        <div className="space-y-4">
-          <h2 id="security-reminders" className="text-2xl font-semibold text-foreground">
-            Important Security Reminders
-          </h2>
-        </div>
-
-        <div className="grid gap-6 grid-cols-1 lg:grid-cols-2">
-          <Card className="border-red-200 dark:border-red-800">
-            <CardHeader className="pb-3">
-              <CardTitle className="text-base font-medium flex items-center gap-3 text-red-700 dark:text-red-400">
-                <AlertTriangle className="h-5 w-5" />
-                Critical Warnings
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="pt-0">
-              <ul className="text-sm text-red-600 dark:text-red-400 space-y-2">
-                <li className="flex items-start gap-2">
-                  <span className="w-1.5 h-1.5 bg-red-500 rounded-full mt-2 flex-shrink-0"></span>
-                  <span><strong>Lost passwords are permanently unrecoverable</strong> - there is no password reset</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="w-1.5 h-1.5 bg-red-500 rounded-full mt-2 flex-shrink-0"></span>
-                  <span>We cannot decrypt your data even if you request it</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="w-1.5 h-1.5 bg-red-500 rounded-full mt-2 flex-shrink-0"></span>
-                  <span>Always verify you're on the correct domain before connecting</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="w-1.5 h-1.5 bg-red-500 rounded-full mt-2 flex-shrink-0"></span>
-                  <span>Keep your MetaMask seed phrase secure and backed up</span>
-                </li>
-              </ul>
-            </CardContent>
-          </Card>
-        </div>
-
-        <Alert>
-          <Lock className="h-4 w-4" />
-          <AlertDescription>
-            <strong>Zero-Knowledge Guarantee:</strong> Your encryption passwords never leave your device. All decryption 
-            happens locally in your browser. Even under legal compulsion, we cannot access your data because we don't 
-            possess the keys—they exist only during your active browser sessions.
-          </AlertDescription>
-        </Alert>
-      </div>
-
+      
       {/* Quick Reference */}
       <div className="space-y-6">
         <div className="space-y-4">
