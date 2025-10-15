@@ -14,10 +14,10 @@ export default function DocumentationHome() {
         <GettingStarted />
         <Security />
         <UsingKeyura />
-        <TechnicalDetails />
+        {/* <TechnicalDetails />
         <Pricing />
         <FAQ />
-        <Support />
+        <Support /> */}
       </div>
     </div>
   );

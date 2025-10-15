@@ -37,45 +37,45 @@ const nav = [
       { label: "Accessing Your Data", href: "/documentation#access" },
     ],
   },
-  {
-    label: "Technical Details",
-    icon: Cpu,
-    href: "/documentation#technical-details",
-    children: [
-      { label: "Smart Contract Architecture", href: "/documentation#contracts" },
-      { label: "IPFS Integration", href: "/documentation#ipfs" },
-      { label: "Supported File Types", href: "/documentation#types" },
-    ],
-  },
-  {
-    label: "Gas Fee Estimations",
-    icon: DollarSign,
-    href: "/documentation#pricing",
-    children: [
-      { label: "Cost Breakdown", href: "/documentation#breakdown" },
-      { label: "Gas Fee Estimates", href: "/documentation#gas" },
-      { label: "Payment Methods", href: "/documentation#payment" },
-    ],
-  },
-  {
-    label: "FAQ",
-    icon: HelpCircle,
-    href: "/documentation#faq",
-    children: [
-      { label: "Common Questions", href: "/documentation#common" },
-      { label: "Troubleshooting", href: "/documentation#troubleshooting" },
-      { label: "Best Practices", href: "/documentation#best-practices" },
-    ],
-  },
-  {
-    label: "Support",
-    icon: Phone,
-    href: "/documentation#support",
-    children: [
-      { label: "Contact Information", href: "/documentation#contact" },
-      { label: "Community Links", href: "/documentation#community" },
-    ],
-  },
+  // {
+  //   label: "Technical Details",
+  //   icon: Cpu,
+  //   href: "/documentation#technical-details",
+  //   children: [
+  //     { label: "Smart Contract Architecture", href: "/documentation#contracts" },
+  //     { label: "IPFS Integration", href: "/documentation#ipfs" },
+  //     { label: "Supported File Types", href: "/documentation#types" },
+  //   ],
+  // },
+  // {
+  //   label: "Gas Fee Estimations",
+  //   icon: DollarSign,
+  //   href: "/documentation#pricing",
+  //   children: [
+  //     { label: "Cost Breakdown", href: "/documentation#breakdown" },
+  //     { label: "Gas Fee Estimates", href: "/documentation#gas" },
+  //     { label: "Payment Methods", href: "/documentation#payment" },
+  //   ],
+  // },
+  // {
+  //   label: "FAQ",
+  //   icon: HelpCircle,
+  //   href: "/documentation#faq",
+  //   children: [
+  //     { label: "Common Questions", href: "/documentation#common" },
+  //     { label: "Troubleshooting", href: "/documentation#troubleshooting" },
+  //     { label: "Best Practices", href: "/documentation#best-practices" },
+  //   ],
+  // },
+  // {
+  //   label: "Support",
+  //   icon: Phone,
+  //   href: "/documentation#support",
+  //   children: [
+  //     { label: "Contact Information", href: "/documentation#contact" },
+  //     { label: "Community Links", href: "/documentation#community" },
+  //   ],
+  // },
 ];
 
 export function Sidebar() {
@@ -97,21 +97,21 @@ export function Sidebar() {
       "files",
       "text",
       "access",
-      "technical-details",
-      "contracts",
-      "ipfs",
-      "types",
-      "pricing",
-      "breakdown",
-      "gas",
-      "payment",
-      "faq",
-      "common",
-      "troubleshooting",
-      "best-practices",
-      "support",
-      "contact",
-      "community",
+      // "technical-details",
+      // "contracts",
+      // "ipfs",
+      // "types",
+      // "pricing",
+      // "breakdown",
+      // "gas",
+      // "payment",
+      // "faq",
+      // "common",
+      // "troubleshooting",
+      // "best-practices",
+      // "support",
+      // "contact",
+      // "community",
     ],
     []
   );
@@ -156,10 +156,10 @@ export function Sidebar() {
       "getting-started": ["what-is-keyura", "prerequisites"],
       security: ["encryption", "blockchain", "privacy"],
       "using-keyura": ["wallet", "deploy", "files", "text", "access"],
-      "technical-details": ["contracts", "ipfs", "types"],
-      pricing: ["breakdown", "gas", "payment"],
-      faq: ["common", "troubleshooting", "best-practices"],
-      support: ["contact", "community"],
+      // "technical-details": ["contracts", "ipfs", "types"],
+      // pricing: ["breakdown", "gas", "payment"],
+      // faq: ["common", "troubleshooting", "best-practices"],
+      // support: ["contact", "community"],
     };
     return activeId === sectionId || (sectionChildrenMap[sectionId] || []).includes(activeId);
   };
