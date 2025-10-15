@@ -1,455 +1,1045 @@
+'use client';
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Separator } from "@/components/ui/separator";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { 
+  User, 
+  Wallet, 
+  Settings, 
+  Upload, 
+  FileText, 
+  Eye, 
+  Shield, 
+  AlertTriangle,
+  CheckCircle,
+  ArrowRight,
+  Database,
+  Lock,
+  Key
+} from "lucide-react";
+import Image from "next/image";
 
 export default function UsingKeyura() {
   return (
-    <section id="using-keyura" className="space-y-8">
-      <div className="space-y-1">
-        <h2 className="text-3xl font-bold text-slate-900">Using Keyura</h2>
-        <p className="text-lg text-slate-600">Step-by-step guide to securing your data with blockchain encryption</p>
+    <section id="using-keyura" className="space-y-10 w-full">
+      {/* Header */}
+      <div className="space-y-3">
+        <h1 className="text-3xl font-semibold tracking-tight text-foreground">
+          Using Keyura
+        </h1>
+        <p className="text-lg text-muted-foreground leading-relaxed">
+          Step-by-step guide to securing your data with blockchain encryption
+        </p>
+        <Separator className="!mt-6" />
       </div>
 
-      <div className="space-y-8">
-        <div className="space-y-3">
-          <h3 id="user-setup" className="text-2xl font-semibold text-slate-800">Step 1: User Setup</h3>
-          <p className="text-slate-700">Create your Keyura profile by connecting your wallet and setting up authentication.</p>
-          
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-slate-800">🔗 Connect Your Wallet</CardTitle>
+      {/* User Setup */}
+      <div className="space-y-6">
+        <div className="space-y-4">
+          <h2 id="user-setup" className="text-2xl font-semibold text-foreground">
+            Step 1: User Setup & Profile Creation
+          </h2>
+          <p className="text-muted-foreground leading-relaxed">
+            Begin your journey by setting up your Keyura profile. This one-time setup connects your MetaMask wallet 
+            and creates your secure login credentials.
+          </p>
+        </div>
+
+        <div className="grid gap-6 grid-cols-1 lg:grid-cols-2">
+          <Card className="border-border/50">
+            <CardHeader className="pb-3">
+              <CardTitle className="text-base font-medium flex items-center gap-3">
+                <Wallet className="h-5 w-5 text-orange-600" />
+                Connect MetaMask Wallet
+              </CardTitle>
             </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                <p className="text-sm text-slate-700">Visit <a href="https://keyura.vercel.app/user-setup" className="text-emerald-600 hover:underline font-medium">keyura.vercel.app/user-setup</a> to begin.</p>
-                
-                <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
-                  <p className="text-sm text-amber-800"><strong>No MetaMask?</strong> If the browser doesn't detect a wallet, you'll need to install MetaMask from <a href="https://metamask.io" className="text-emerald-600 hover:underline">metamask.io</a> first.</p>
-                </div>
-
-                <div className="space-y-2">
-                  <p className="text-sm font-semibold text-slate-800">What happens during setup:</p>
-                  <ol className="list-decimal list-inside text-sm text-slate-700 space-y-2 ml-2">
-                    <li><strong>Wallet Connection:</strong> Click to connect your MetaMask wallet</li>
-                    <li><strong>Automatic Network Setup:</strong> Polygon network will be added automatically if not present</li>
-                    <li><strong>Wallet Address Display:</strong> Your connected wallet address will be shown</li>
-                    <li><strong>Login Password:</strong> Set a password to access Keyura (this is NOT your encryption key)</li>
-                  </ol>
-                </div>
-
-                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                  <p className="text-sm text-blue-800"><strong>Important:</strong> The login password is only for accessing the Keyura platform. Your data encryption uses separate passwords that you'll set for each file or text entry.</p>
-                </div>
-              </div>
+            <CardContent className="pt-0 space-y-3">
+              <ol className="text-sm text-muted-foreground space-y-2">
+                <li className="flex gap-3">
+                  <Badge variant="outline" className="text-xs min-w-fit">1</Badge>
+                  <span>Visit <code className="bg-muted px-1 rounded text-xs">keyura.vercel.app/user-setup</code></span>
+                </li>
+                <li className="flex gap-3">
+                  <Badge variant="outline" className="text-xs min-w-fit">2</Badge>
+                  <span>Click "Connect Wallet" to authorize MetaMask</span>
+                </li>
+                <li className="flex gap-3">
+                  <Badge variant="outline" className="text-xs min-w-fit">3</Badge>
+                  <span>Polygon network will be automatically added if not present</span>
+                </li>
+                <li className="flex gap-3">
+                  <Badge variant="outline" className="text-xs min-w-fit">4</Badge>
+                  <span>Your wallet address will be displayed once connected</span>
+                </li>
+              </ol>
             </CardContent>
           </Card>
 
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-slate-800">📸 Setup Process Preview</CardTitle>
+          <Card className="border-border/50">
+            <CardHeader className="pb-3">
+              <CardTitle className="text-base font-medium flex items-center gap-3">
+                <User className="h-5 w-5 text-blue-600" />
+                Set Login Password
+              </CardTitle>
             </CardHeader>
-            <CardContent>
-              <p className="text-sm text-slate-600 italic">Screenshot showing the user profile creation interface will be displayed here for reference.</p>
+            <CardContent className="pt-0 space-y-3">
+              <ol className="text-sm text-muted-foreground space-y-2">
+                <li className="flex gap-3">
+                  <Badge variant="outline" className="text-xs min-w-fit">1</Badge>
+                  <span>Create a strong login password for Keyura access</span>
+                </li>
+                <li className="flex gap-3">
+                  <Badge variant="outline" className="text-xs min-w-fit">2</Badge>
+                  <span>This is separate from your encryption passwords</span>
+                </li>
+                <li className="flex gap-3">
+                  <Badge variant="outline" className="text-xs min-w-fit">3</Badge>
+                  <span>Complete profile creation to proceed</span>
+                </li>
+              </ol>
+              <Alert>
+                <AlertDescription className="text-xs">
+                  <strong>Note:</strong> This login password is for Keyura platform access, not for data encryption.
+                </AlertDescription>
+              </Alert>
             </CardContent>
           </Card>
         </div>
 
-        <div className="space-y-3">
-          <h3 id="login" className="text-2xl font-semibold text-slate-800">Step 2: Login to Dashboard</h3>
-          <p className="text-slate-700">Once setup is complete, you'll be redirected to the login page.</p>
-          
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-slate-800">🔐 Access Your Vault</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                <p className="text-sm text-slate-700">Visit <a href="https://keyura.vercel.app/login" className="text-emerald-600 hover:underline font-medium">keyura.vercel.app/login</a></p>
-                <ol className="list-decimal list-inside text-sm text-slate-700 space-y-1 ml-2">
-                  <li>Enter your wallet address</li>
-                  <li>Enter the login password you created during setup</li>
-                  <li>You'll be redirected to your personalized dashboard</li>
-                </ol>
+        <Card className="border-border/50">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-base font-medium">What Happens During Setup</CardTitle>
+          </CardHeader>
+          <CardContent className="pt-0">
+            <div className="grid gap-4 grid-cols-1 md:grid-cols-3">
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 bg-blue-100 dark:bg-blue-900/20 rounded-full flex items-center justify-center">
+                  <Wallet className="h-4 w-4 text-blue-600" />
+                </div>
+                <div>
+                  <p className="text-sm font-medium">Wallet Detection</p>
+                  <p className="text-xs text-muted-foreground">MetaMask installation check</p>
+                </div>
               </div>
-            </CardContent>
-          </Card>
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 bg-purple-100 dark:bg-purple-900/20 rounded-full flex items-center justify-center">
+                  <Settings className="h-4 w-4 text-purple-600" />
+                </div>
+                <div>
+                  <p className="text-sm font-medium">Network Setup</p>
+                  <p className="text-xs text-muted-foreground">Automatic Polygon addition</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 bg-green-100 dark:bg-green-900/20 rounded-full flex items-center justify-center">
+                  <User className="h-4 w-4 text-green-600" />
+                </div>
+                <div>
+                  <p className="text-sm font-medium">Profile Creation</p>
+                  <p className="text-xs text-muted-foreground">Secure login credentials</p>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Screenshot */}
+        <Card className="border-border/50">
+          <CardContent className="p-6">
+            <div className="space-y-3">
+              <h4 className="text-sm font-medium text-foreground">User Setup Process</h4>
+              <div className="rounded-lg overflow-hidden border border-border/50">
+                <Image 
+                  src="/user-setup-screenshot.png" 
+                  alt="User Setup Process - Wallet connection and profile creation flow" 
+                  width={800} 
+                  height={600}
+                  className="w-full h-auto"
+                />
+              </div>
+              <p className="text-xs text-muted-foreground">
+                Screenshot showing wallet connection and profile creation flow
+              </p>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Login & Dashboard */}
+      <div className="space-y-6">
+        <div className="space-y-4">
+          <h2 id="login-dashboard" className="text-2xl font-semibold text-foreground">
+            Step 2: Login & Dashboard Access
+          </h2>
+                    <p className="text-muted-foreground leading-relaxed">
+            After completing your profile setup, you'll be redirected to the login page to access your secure dashboard.
+          </p>
         </div>
 
-        <div className="space-y-3">
-          <h3 id="deploy" className="text-2xl font-semibold text-slate-800">Step 3: Dashboard & Contract Deployment</h3>
-          <p className="text-slate-700">Your dashboard contains statistics, storage options, and contract settings.</p>
-          
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-slate-800">📊 Dashboard Overview</CardTitle>
+        <div className="grid gap-6 grid-cols-1 lg:grid-cols-2">
+          <Card className="border-border/50">
+            <CardHeader className="pb-3">
+              <CardTitle className="text-base font-medium flex items-center gap-3">
+                <Shield className="h-5 w-5 text-green-600" />
+                Secure Login Process
+              </CardTitle>
             </CardHeader>
-            <CardContent>
-              <p className="text-sm text-slate-700 mb-3">The dashboard has three main tabs:</p>
+            <CardContent className="pt-0 space-y-3">
+              <ol className="text-sm text-muted-foreground space-y-2">
+                <li className="flex gap-3">
+                  <Badge variant="outline" className="text-xs min-w-fit">1</Badge>
+                  <span>Navigate to <code className="bg-muted px-1 rounded text-xs">keyura.vercel.app/login</code></span>
+                </li>
+                <li className="flex gap-3">
+                  <Badge variant="outline" className="text-xs min-w-fit">2</Badge>
+                  <span>Enter your wallet address and login password</span>
+                </li>
+                <li className="flex gap-3">
+                  <Badge variant="outline" className="text-xs min-w-fit">3</Badge>
+                  <span>Successfully authenticate to access dashboard</span>
+                </li>
+              </ol>
+            </CardContent>
+          </Card>
+
+          <Card className="border-border/50">
+            <CardHeader className="pb-3">
+              <CardTitle className="text-base font-medium flex items-center gap-3">
+                <Database className="h-5 w-5 text-purple-600" />
+                Dashboard Overview
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="pt-0 space-y-3">
               <div className="space-y-2">
-                <div className="flex gap-3 p-3 bg-slate-50 rounded-lg">
-                  <span className="text-emerald-600 font-bold">1.</span>
-                  <div>
-                    <p className="font-semibold text-slate-800">Store Data</p>
-                    <p className="text-sm text-slate-600">Upload files or save text securely</p>
-                  </div>
+                <div className="flex items-center gap-2">
+                  <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
+                  <span className="text-sm text-muted-foreground">Statistics and usage overview at the top</span>
                 </div>
-                <div className="flex gap-3 p-3 bg-slate-50 rounded-lg">
-                  <span className="text-emerald-600 font-bold">2.</span>
-                  <div>
-                    <p className="font-semibold text-slate-800">My Vault</p>
-                    <p className="text-sm text-slate-600">View and access your stored data</p>
-                  </div>
+                <div className="flex items-center gap-2">
+                  <span className="w-2 h-2 bg-green-500 rounded-full"></span>
+                  <span className="text-sm text-muted-foreground">Three main tabs: Store Data, My Vault, Contract Settings</span>
                 </div>
-                <div className="flex gap-3 p-3 bg-slate-50 rounded-lg">
-                  <span className="text-emerald-600 font-bold">3.</span>
-                  <div>
-                    <p className="font-semibold text-slate-800">Contract Settings</p>
-                    <p className="text-sm text-slate-600">Deploy or connect to your smart contract</p>
-                  </div>
+                <div className="flex items-center gap-2">
+                  <span className="w-2 h-2 bg-orange-500 rounded-full"></span>
+                  <span className="text-sm text-muted-foreground">Contract deployment required for first-time users</span>
                 </div>
               </div>
             </CardContent>
           </Card>
+        </div>
+      </div>
 
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-slate-800">🚀 Deploy Your Smart Contract (One-Time Setup)</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                  <p className="text-sm text-blue-800"><strong>First Time?</strong> You must deploy a smart contract before storing any data. This is a one-time process.</p>
-                </div>
+      {/* Contract Deployment */}
+      <div className="space-y-6">
+        <div className="space-y-4">
+          <h2 id="contract-deployment" className="text-2xl font-semibold text-foreground">
+            Step 3: Deploy Your Personal Vault Contract
+          </h2>
+          <p className="text-muted-foreground leading-relaxed">
+            Your personal vault is a smart contract deployed exclusively for you on Polygon. This one-time setup 
+            creates your secure storage infrastructure.
+          </p>
+        </div>
 
-                <div className="space-y-3">
-                  {[
-                    { n: 1, t: "Navigate to Contract Settings", d: "Click on the Contract Settings tab in your dashboard" },
-                    { n: 2, t: "Click Deploy Contract", d: "Initiate the deployment process" },
-                    { n: 3, t: "Confirm in MetaMask", d: "Approve the transaction in your wallet (costs 0.01–0.05 POL)" },
-                    { n: 4, t: "Contract Deployed", d: "Your personal vault contract address will be displayed" },
-                  ].map((s) => (
-                    <div key={s.n} className="flex gap-4 p-4 border border-slate-200 rounded-lg">
-                      <div className="flex-shrink-0 w-8 h-8 bg-emerald-600 text-white rounded-full flex items-center justify-center font-semibold text-sm">{s.n}</div>
-                      <div>
-                        <div className="font-semibold text-slate-800">{s.t}</div>
-                        <p className="text-sm text-slate-600">{s.d}</p>
-                      </div>
+        <Alert>
+          <AlertTriangle className="h-4 w-4" />
+          <AlertDescription>
+            <strong>Important:</strong> Contract deployment is required before you can store any data. 
+            If you already have a deployed contract, you can use that existing address instead.
+          </AlertDescription>
+        </Alert>
+
+        <Card className="border-border/50">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-base font-medium">Deployment Process</CardTitle>
+          </CardHeader>
+          <CardContent className="pt-0">
+            <div className="space-y-4">
+              {[
+                { 
+                  n: 1, 
+                  t: "Navigate to Contract Settings", 
+                  d: "Go to the Contract Settings tab in your dashboard",
+                  icon: <Settings className="h-4 w-4" />
+                },
+                { 
+                  n: 2, 
+                  t: "Click Deploy Contract", 
+                  d: "Initiate the smart contract deployment process",
+                  icon: <ArrowRight className="h-4 w-4" />
+                },
+                { 
+                  n: 3, 
+                  t: "Confirm MetaMask Transaction", 
+                  d: "Approve the deployment transaction in your MetaMask wallet",
+                  icon: <Wallet className="h-4 w-4" />
+                },
+                { 
+                  n: 4, 
+                  t: "Contract Address Generated", 
+                  d: "Your unique vault contract address will be displayed",
+                  icon: <CheckCircle className="h-4 w-4" />
+                },
+              ].map((step) => (
+                <div key={step.n} className="flex gap-4 p-4 border border-border/50 rounded-lg">
+                  <div className="flex-shrink-0 w-10 h-10 bg-primary text-primary-foreground rounded-full flex items-center justify-center font-semibold text-sm">
+                    {step.n}
+                  </div>
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 font-medium text-foreground mb-1">
+                      {step.icon}
+                      {step.t}
                     </div>
-                  ))}
+                    <p className="text-sm text-muted-foreground">{step.d}</p>
+                  </div>
                 </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
 
-                <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
-                  <p className="text-sm text-amber-800"><strong>Already Have a Contract?</strong> If you've previously deployed a Keyura contract and want to use it, you can import it by entering your existing contract address in the settings.</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-slate-800">📸 Contract Deployment Preview</CardTitle>
+        <div className="grid gap-6 grid-cols-1 lg:grid-cols-2">
+          <Card className="border-border/50">
+            <CardHeader className="pb-3">
+              <CardTitle className="text-base font-medium">Contract Features</CardTitle>
             </CardHeader>
-            <CardContent>
-              <p className="text-sm text-slate-600 italic">Screenshot showing the empty contract settings interface before deployment will be displayed here.</p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-slate-800">🔧 What Your Smart Contract Does</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <ul className="text-sm text-slate-700 space-y-2">
-                <li>• Creates a personal vault contract owned exclusively by you</li>
-                <li>• Only you (the owner) can write data to this contract</li>
-                <li>• Provides functions to store and retrieve encrypted entries</li>
-                <li>• Contract address serves as your permanent vault identifier</li>
-                <li>• All data remains encrypted on-chain and IPFS</li>
+            <CardContent className="pt-0">
+              <ul className="text-sm text-muted-foreground space-y-2">
+                <li className="flex items-start gap-2">
+                  <span className="w-1.5 h-1.5 bg-blue-500 rounded-full mt-2 flex-shrink-0"></span>
+                  <span>Owner-only write permissions for maximum security</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="w-1.5 h-1.5 bg-green-500 rounded-full mt-2 flex-shrink-0"></span>
+                  <span>Functions to store and retrieve encrypted entries</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="w-1.5 h-1.5 bg-purple-500 rounded-full mt-2 flex-shrink-0"></span>
+                  <span>Permanent vault ID tied to your wallet</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="w-1.5 h-1.5 bg-orange-500 rounded-full mt-2 flex-shrink-0"></span>
+                  <span>Typical deployment cost: 0.01–0.05 POL</span>
+                </li>
               </ul>
             </CardContent>
           </Card>
 
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-slate-800">✅ After Deployment</CardTitle>
+          <Card className="border-border/50">
+            <CardHeader className="pb-3">
+              <CardTitle className="text-base font-medium">Using Existing Contract</CardTitle>
             </CardHeader>
-            <CardContent>
-              <p className="text-sm text-slate-700">Once your contract is deployed, the storage fields for files and text will become visible in the Store Data tab. You can now start securing your data on the blockchain!</p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-slate-800">📸 Storage Fields Preview</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-slate-600 italic">Screenshot showing the file and text storage input fields after successful contract deployment will be displayed here.</p>
+            <CardContent className="pt-0">
+                            <div className="space-y-3">
+                <p className="text-sm text-muted-foreground">
+                  If you already have a deployed Keyura contract, you can use it instead of deploying a new one.
+                </p>
+                <ol className="text-sm text-muted-foreground space-y-2">
+                  <li className="flex gap-3">
+                    <Badge variant="outline" className="text-xs min-w-fit">1</Badge>
+                    <span>Enter your existing contract address</span>
+                  </li>
+                  <li className="flex gap-3">
+                    <Badge variant="outline" className="text-xs min-w-fit">2</Badge>
+                    <span>Verify ownership through wallet signature</span>
+                  </li>
+                  <li className="flex gap-3">
+                    <Badge variant="outline" className="text-xs min-w-fit">3</Badge>
+                    <span>Access your existing vault data</span>
+                  </li>
+                </ol>
+              </div>
             </CardContent>
           </Card>
         </div>
 
-        <div className="space-y-3">
-          <h3 id="files" className="text-2xl font-semibold text-slate-800">Step 4: Storing Files</h3>
-          <p className="text-slate-700">Encrypt and store any file up to 25 MB with unique passwords.</p>
+        {/* Screenshots */}
+        <div className="grid gap-6 grid-cols-1 lg:grid-cols-2">
+          <Card className="border-border/50">
+            <CardContent className="p-6">
+              <div className="space-y-3">
+                <h4 className="text-sm font-medium text-foreground">Empty Contract Settings</h4>
+                <div className="rounded-lg overflow-hidden border border-border/50">
+                  <Image 
+                    src="/empty-contract-settings.png" 
+                    alt="Empty Contract Settings - Shows initial state before contract deployment" 
+                    width={600} 
+                    height={400}
+                    className="w-full h-auto"
+                  />
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  Shows initial state before contract deployment
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="border-border/50">
+            <CardContent className="p-6">
+              <div className="space-y-3">
+                <h4 className="text-sm font-medium text-foreground">Contract Deployment</h4>
+                <div className="rounded-lg overflow-hidden border border-border/50">
+                  <Image 
+                    src="/contract-deployment.png" 
+                    alt="Contract Deployment - Shows deployment process and confirmation" 
+                    width={600} 
+                    height={400}
+                    className="w-full h-auto"
+                  />
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  Shows deployment process and confirmation
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+      </div>
+
+      {/* Data Storage */}
+      <div className="space-y-6">
+        <div className="space-y-4">
+          <h2 id="storing-data" className="text-2xl font-semibold text-foreground">
+            Step 4: Storing Your Data
+          </h2>
+          <p className="text-muted-foreground leading-relaxed">
+            Once your contract is deployed, you can securely store both files and text data. Each entry can have 
+            its own unique encryption password for maximum security flexibility.
+          </p>
+        </div>
+
+        <Alert>
+          <CheckCircle className="h-4 w-4" />
+          <AlertDescription>
+            <strong>Flexible Security:</strong> You can use unique passwords for each file/text entry, or use the same 
+            password for all your data—the choice is yours based on your security preferences.
+          </AlertDescription>
+        </Alert>
+
+        {/* File Storage */}
+        <div className="space-y-4">
+          <h3 className="text-xl font-semibold text-foreground flex items-center gap-2">
+            <Upload className="h-5 w-5 text-blue-600" />
+            File Storage
+          </h3>
           
-          <div className="grid gap-4 md:grid-cols-2">
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-slate-800">📁 File Upload Process</CardTitle>
+          <div className="grid gap-6 grid-cols-1 lg:grid-cols-2">
+            <Card className="border-border/50">
+              <CardHeader className="pb-3">
+                <CardTitle className="text-base font-medium">Upload Process</CardTitle>
               </CardHeader>
-              <CardContent>
-                <ol className="list-decimal list-inside text-sm text-slate-700 space-y-2 ml-2">
-                  <li>Navigate to the <strong>Store Data</strong> tab</li>
-                  <li>Select <strong>File Storage</strong> option</li>
-                  <li>Click to upload or drag-and-drop your file</li>
-                  <li>Enter a descriptive name for your file (optional but recommended)</li>
-                  <li>Set a strong encryption password for this file</li>
-                  <li>Click <strong>Encrypt & Store File</strong></li>
-                  <li>Confirm the transaction in MetaMask</li>
+              <CardContent className="pt-0">
+                <ol className="text-sm text-muted-foreground space-y-2">
+                  <li className="flex gap-3">
+                    <Badge variant="outline" className="text-xs min-w-fit">1</Badge>
+                    <span>Go to "Store Data" tab and select "Store Files"</span>
+                  </li>
+                  <li className="flex gap-3">
+                    <Badge variant="outline" className="text-xs min-w-fit">2</Badge>
+                    <span>Click to select your file (max 25 MB)</span>
+                  </li>
+                  <li className="flex gap-3">
+                    <Badge variant="outline" className="text-xs min-w-fit">3</Badge>
+                    <span>Enter a custom name (optional)</span>
+                  </li>
+                  <li className="flex gap-3">
+                    <Badge variant="outline" className="text-xs min-w-fit">4</Badge>
+                    <span>Set a strong encryption password</span>
+                  </li>
+                  <li className="flex gap-3">
+                    <Badge variant="outline" className="text-xs min-w-fit">5</Badge>
+                    <span>Click "Encrypt & Store File"</span>
+                  </li>
                 </ol>
               </CardContent>
             </Card>
-            
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-slate-800">🔐 How It Works</CardTitle>
+
+            <Card className="border-border/50">
+              <CardHeader className="pb-3">
+                <CardTitle className="text-base font-medium">Technical Process</CardTitle>
               </CardHeader>
-              <CardContent>
-                <ol className="list-decimal list-inside text-sm text-slate-700 space-y-2 ml-2">
-                  <li><strong>Local Encryption:</strong> File encrypted with AES-256-GCM in your browser</li>
-                  <li><strong>IPFS Upload:</strong> Encrypted blob uploaded to IPFS network</li>
-                  <li><strong>Double Encryption:</strong> IPFS CID encrypted again with your password</li>
-                  <li><strong>Blockchain Storage:</strong> Encrypted reference saved to your smart contract</li>
+              <CardContent className="pt-0">
+                <ol className="text-sm text-muted-foreground space-y-2">
+                  <li className="flex gap-3">
+                    <Badge variant="outline" className="text-xs min-w-fit">1</Badge>
+                    <span>File encrypted with AES-256-GCM in browser</span>
+                  </li>
+                  <li className="flex gap-3">
+                    <Badge variant="outline" className="text-xs min-w-fit">2</Badge>
+                    <span>Encrypted blob uploaded to IPFS</span>
+                  </li>
+                  <li className="flex gap-3">
+                    <Badge variant="outline" className="text-xs min-w-fit">3</Badge>
+                    <span>IPFS CID encrypted with your password</span>
+                  </li>
+                  <li className="flex gap-3">
+                    <Badge variant="outline" className="text-xs min-w-fit">4</Badge>
+                    <span>Encrypted reference stored on blockchain</span>
+                  </li>
+                  <li className="flex gap-3">
+                    <Badge variant="outline" className="text-xs min-w-fit">5</Badge>
+                    <span>Transaction hash recorded for verification</span>
+                  </li>
                 </ol>
               </CardContent>
             </Card>
           </div>
 
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-slate-800">💡 File Storage Tips</CardTitle>
+          <Card className="border-border/50">
+            <CardHeader className="pb-3">
+              <CardTitle className="text-base font-medium">Supported File Types & Best Practices</CardTitle>
             </CardHeader>
-            <CardContent>
-              <ul className="text-sm text-slate-700 space-y-2">
-                <li>• <strong>Unique Passwords:</strong> Each file can have its own encryption password for added security</li>
-                <li>• <strong>Same Password Option:</strong> You can also use the same password for all files if you prefer</li>
-                <li>• <strong>Use a Password Manager:</strong> Highly recommended for managing multiple unique passwords</li>
-                <li>• <strong>Descriptive Names:</strong> Give meaningful names to easily identify files later</li>
-                <li>• <strong>Supported Formats:</strong> PDF, JPG, PNG, DOC, TXT, and most common file types</li>
-                <li>• <strong>Size Limit:</strong> Maximum 25 MB per file upload</li>
-              </ul>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-slate-800">⚠️ Critical Security Note</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-                <p className="text-sm text-red-800"><strong>Your password is never stored anywhere.</strong> If you lose your encryption password, the data cannot be recovered. There is no password reset option. Keep your passwords safe!</p>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        <div className="space-y-3">
-          <h3 id="text" className="text-2xl font-semibold text-slate-800">Step 5: Storing Text Data</h3>
-          <p className="text-slate-700">Securely store notes, secrets, keys, and sensitive text with the same encryption as files.</p>
-          
-          <div className="grid gap-4 md:grid-cols-2">
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-slate-800">📝 Text Storage Process</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <ol className="list-decimal list-inside text-sm text-slate-700 space-y-2 ml-2">
-                  <li>Navigate to the <strong>Store Data</strong> tab</li>
-                  <li>Select <strong>Text/Notes Storage</strong> option</li>
-                  <li>Enter a descriptive name for your text entry</li>
-                  <li>Type or paste your text content in the text area</li>
-                  <li>Set a strong encryption password</li>
-                  <li>Click <strong>Encrypt & Store Text</strong></li>
-                  <li>Confirm the transaction in MetaMask</li>
-                </ol>
-              </CardContent>
-            </Card>
-            
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-slate-800">🔒 Common Use Cases</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <ul className="text-sm text-slate-700 space-y-2">
-                  <li>• <strong>Crypto Wallets:</strong> Seed phrases and private keys</li>
-                  <li>• <strong>Credentials:</strong> Passwords, PINs, and access codes</li>
-                  <li>• <strong>Confidential Notes:</strong> Personal or business information</li>
-                  <li>• <strong>Recovery Codes:</strong> 2FA backup codes and recovery phrases</li>
-                  <li>• <strong>Legal Documents:</strong> Contracts or agreements in text form</li>
-                  <li>• <strong>API Keys:</strong> Development tokens and secret keys</li>
-                </ul>
-              </CardContent>
-            </Card>
-          </div>
-
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-slate-800">💡 Text Storage Tips</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <ul className="text-sm text-slate-700 space-y-2">
-                <li>• <strong>Flexible Passwords:</strong> Like files, each text entry can have a unique password or use the same one</li>
-                <li>• <strong>Organized Naming:</strong> Use clear names to identify entries quickly (e.g., "Gmail Backup Codes", "Binance API Keys")</li>
-                <li>• <strong>No Size Worries:</strong> Text storage is lightweight and cost-effective on blockchain</li>
-                <li>• <strong>Rich Text Support:</strong> Store formatted text, JSON, code snippets, or plain text</li>
-              </ul>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-slate-800">⚠️ Important Security Considerations</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
-                  <p className="text-sm text-amber-800"><strong>For Critical Secrets:</strong> While Keyura provides strong encryption, for extremely sensitive data like wallet seed phrases, consider using dedicated hardware wallets or secure offline storage as your primary backup.</p>
+            <CardContent className="pt-0">
+              <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
+                <div>
+                  <p className="text-sm font-medium text-foreground mb-2">Supported Formats</p>
+                  <div className="flex flex-wrap gap-1">
+                    {['PDF', 'JPG', 'PNG', 'DOC', 'DOCX', 'TXT', 'MP4', 'MP3', 'ZIP'].map((format) => (
+                      <Badge key={format} variant="secondary" className="text-xs">{format}</Badge>
+                    ))}
+                  </div>
                 </div>
-                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                  <p className="text-sm text-blue-800"><strong>Best Practice:</strong> Use Keyura as one layer in your security strategy. For mission-critical secrets, maintain multiple secure backups across different storage methods.</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        <div className="space-y-3">
-          <h3 id="access" className="text-2xl font-semibold text-slate-800">Step 6: Accessing Your Stored Data</h3>
-          <p className="text-slate-700">View and decrypt your files and text entries from the My Vault tab.</p>
-          
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-slate-800">🗂️ Your Data Vault</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                <p className="text-sm text-slate-700">Once you've stored data, navigate to the <strong>My Vault</strong> tab to see all your encrypted entries displayed in a data table.</p>
-                
-                <div className="bg-slate-50 border border-slate-200 rounded-lg p-4">
-                  <p className="text-sm font-semibold text-slate-800 mb-2">The vault table displays:</p>
-                  <ul className="text-sm text-slate-700 space-y-1 ml-4">
-                    <li>• <strong>Type:</strong> Whether it's a file or text entry</li>
-                    <li>• <strong>Name:</strong> The descriptive name you provided during storage</li>
-                    <li>• <strong>Transaction Hash:</strong> Blockchain transaction reference</li>
-                    <li>• <strong>Upload Time:</strong> When the data was stored</li>
-                    <li>• <strong>Actions:</strong> Open/decrypt button to access your data</li>
+                <div>
+                  <p className="text-sm font-medium text-foreground mb-2">Best Practices</p>
+                                    <ul className="text-sm text-muted-foreground space-y-1">
+                    <li>• Use descriptive file names</li>
+                    <li>• Maximum 25 MB per file</li>
+                    <li>• Unique passwords for sensitive files</li>
+                    <li>• Consider using a password manager</li>
                   </ul>
                 </div>
               </div>
             </CardContent>
           </Card>
+        </div>
 
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-slate-800">📸 Vault Table Preview</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-slate-600 italic">Screenshot showing the My Vault data table with stored files and text entries will be displayed here.</p>
-            </CardContent>
-          </Card>
+        {/* Text Storage */}
+        <div className="space-y-4">
+          <h3 className="text-xl font-semibold text-foreground flex items-center gap-2">
+            <FileText className="h-5 w-5 text-green-600" />
+            Text Data Storage
+          </h3>
+          
+          <div className="grid gap-6 grid-cols-1 lg:grid-cols-2">
+            <Card className="border-border/50">
+              <CardHeader className="pb-3">
+                <CardTitle className="text-base font-medium">Storage Process</CardTitle>
+              </CardHeader>
+              <CardContent className="pt-0">
+                <ol className="text-sm text-muted-foreground space-y-2">
+                  <li className="flex gap-3">
+                    <Badge variant="outline" className="text-xs min-w-fit">1</Badge>
+                    <span>Select "Store Text/Notes" option</span>
+                  </li>
+                  <li className="flex gap-3">
+                    <Badge variant="outline" className="text-xs min-w-fit">2</Badge>
+                    <span>Enter a descriptive entry name</span>
+                  </li>
+                  <li className="flex gap-3">
+                    <Badge variant="outline" className="text-xs min-w-fit">3</Badge>
+                    <span>Type or paste your text content</span>
+                  </li>
+                  <li className="flex gap-3">
+                    <Badge variant="outline" className="text-xs min-w-fit">4</Badge>
+                    <span>Set encryption password</span>
+                  </li>
+                  <li className="flex gap-3">
+                    <Badge variant="outline" className="text-xs min-w-fit">5</Badge>
+                    <span>Click "Encrypt & Store Text"</span>
+                  </li>
+                </ol>
+              </CardContent>
+            </Card>
 
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-slate-800">🔓 Decryption & Retrieval Process</CardTitle>
+            <Card className="border-border/50">
+              <CardHeader className="pb-3">
+                <CardTitle className="text-base font-medium">Common Use Cases</CardTitle>
+              </CardHeader>
+              <CardContent className="pt-0">
+                <ul className="text-sm text-muted-foreground space-y-2">
+                  <li className="flex items-start gap-2">
+                    <span className="w-1.5 h-1.5 bg-red-500 rounded-full mt-2 flex-shrink-0"></span>
+                    <span>Cryptocurrency seed phrases and private keys</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="w-1.5 h-1.5 bg-blue-500 rounded-full mt-2 flex-shrink-0"></span>
+                    <span>Important passwords and PINs</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="w-1.5 h-1.5 bg-green-500 rounded-full mt-2 flex-shrink-0"></span>
+                    <span>Confidential notes and documents</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="w-1.5 h-1.5 bg-purple-500 rounded-full mt-2 flex-shrink-0"></span>
+                    <span>2FA recovery codes</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="w-1.5 h-1.5 bg-orange-500 rounded-full mt-2 flex-shrink-0"></span>
+                    <span>Legal contracts in text format</span>
+                  </li>
+                </ul>
+              </CardContent>
+            </Card>
+          </div>
+
+          <Alert>
+            <AlertTriangle className="h-4 w-4" />
+            <AlertDescription>
+              <strong>Security Recommendation:</strong> For highly critical secrets like seed phrases, consider using 
+              hardware wallets or dedicated secure storage solutions as an additional security layer.
+            </AlertDescription>
+          </Alert>
+        </div>
+
+        {/* Screenshot */}
+        <Card className="border-border/50">
+          <CardContent className="p-6">
+            <div className="space-y-3">
+              <h4 className="text-sm font-medium text-foreground">Storage Interface</h4>
+              <div className="rounded-lg overflow-hidden border border-border/50">
+                <Image 
+                  src="/storage-interface.png" 
+                  alt="Storage Interface - Shows file and text storage fields after contract deployment" 
+                  width={800} 
+                  height={600}
+                  className="w-full h-auto"
+                />
+              </div>
+              <p className="text-xs text-muted-foreground">
+                Shows file and text storage fields after contract deployment
+              </p>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Accessing Data */}
+      <div className="space-y-6">
+        <div className="space-y-4">
+          <h2 id="accessing-data" className="text-2xl font-semibold text-foreground">
+            Step 5: Accessing Your Stored Data
+          </h2>
+          <p className="text-muted-foreground leading-relaxed">
+            Retrieve and decrypt your stored data using the "My Vault" tab. Only your encryption passwords can 
+            unlock your content—ensuring complete privacy and security.
+          </p>
+        </div>
+
+        <Card className="border-border/50">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-base font-medium">Vault Data Table</CardTitle>
+          </CardHeader>
+          <CardContent className="pt-0">
+            <p className="text-sm text-muted-foreground mb-4">
+              Your vault displays all stored entries in an organized table format with the following information:
+            </p>
+            <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
+              <div className="space-y-2">
+                <div className="w-8 h-8 bg-blue-100 dark:bg-blue-900/20 rounded-lg flex items-center justify-center">
+                  <FileText className="h-4 w-4 text-blue-600" />
+                </div>
+                <div>
+                  <p className="text-sm font-medium">Entry Name</p>
+                  <p className="text-xs text-muted-foreground">Custom name or filename</p>
+                </div>
+              </div>
+              <div className="space-y-2">
+                <div className="w-8 h-8 bg-green-100 dark:bg-green-900/20 rounded-lg flex items-center justify-center">
+                  <Badge className="w-4 h-4" />
+                </div>
+                <div>
+                  <p className="text-sm font-medium">Data Type</p>
+                  <p className="text-xs text-muted-foreground">Text or File indicator</p>
+                </div>
+              </div>
+              <div className="space-y-2">
+                <div className="w-8 h-8 bg-purple-100 dark:bg-purple-900/20 rounded-lg flex items-center justify-center">
+                  <Database className="h-4 w-4 text-purple-600" />
+                </div>
+                <div>
+                  <p className="text-sm font-medium">Transaction Hash</p>
+                  <p className="text-xs text-muted-foreground">Blockchain verification link</p>
+                                </div>
+              </div>
+              <div className="space-y-2">
+                <div className="w-8 h-8 bg-orange-100 dark:bg-orange-900/20 rounded-lg flex items-center justify-center">
+                  <Eye className="h-4 w-4 text-orange-600" />
+                </div>
+                <div>
+                  <p className="text-sm font-medium">Actions</p>
+                  <p className="text-xs text-muted-foreground">Open/decrypt button</p>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <div className="space-y-4">
+          <h3 className="text-xl font-semibold text-foreground flex items-center gap-2">
+            <Lock className="h-5 w-5 text-purple-600" />
+            Decryption Process
+          </h3>
+          
+          <Card className="border-border/50">
+            <CardHeader className="pb-3">
+              <CardTitle className="text-base font-medium">Step-by-Step Decryption</CardTitle>
             </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
+            <CardContent className="pt-0">
+              <div className="space-y-4">
                 {[
-                  { n: 1, t: "Open My Vault Tab", d: "Navigate to the My Vault section in your dashboard" },
-                  { n: 2, t: "Select Your Entry", d: "Find the file or text you want to access in the table" },
-                  { n: 3, t: "Click Open/Decrypt", d: "Click the action button in the Actions column" },
-                  { n: 4, t: "Enter Password", d: "Provide the encryption password you set for this specific entry" },
-                  { n: 5, t: "Access Content", d: "View, download, or copy your decrypted data" },
-                ].map((s) => (
-                  <div key={s.n} className="flex gap-4 p-4 border border-slate-200 rounded-lg">
-                    <div className="flex-shrink-0 w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center font-semibold text-sm">{s.n}</div>
-                    <div>
-                      <div className="font-semibold text-slate-800">{s.t}</div>
-                      <p className="text-sm text-slate-600">{s.d}</p>
+                  { 
+                    n: 1, 
+                    t: "Navigate to My Vault", 
+                    d: "Click on the 'My Vault' tab to view all your stored entries",
+                    icon: <Database className="h-4 w-4" />
+                  },
+                  { 
+                    n: 2, 
+                    t: "Select Entry to Open", 
+                    d: "Click the 'Open' button in the Actions column for your desired entry",
+                    icon: <Eye className="h-4 w-4" />
+                  },
+                  { 
+                    n: 3, 
+                    t: "Enter Encryption Password", 
+                    d: "Provide the specific password you used when storing this entry",
+                    icon: <Key className="h-4 w-4" />
+                  },
+                  { 
+                    n: 4, 
+                    t: "Access Decrypted Content", 
+                    d: "View text content or download decrypted files locally",
+                    icon: <CheckCircle className="h-4 w-4" />
+                  },
+                ].map((step) => (
+                  <div key={step.n} className="flex gap-4 p-4 border border-border/50 rounded-lg">
+                    <div className="flex-shrink-0 w-10 h-10 bg-secondary text-secondary-foreground rounded-full flex items-center justify-center font-semibold text-sm">
+                      {step.n}
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 font-medium text-foreground mb-1">
+                        {step.icon}
+                        {step.t}
+                      </div>
+                      <p className="text-sm text-muted-foreground">{step.d}</p>
                     </div>
                   </div>
                 ))}
               </div>
             </CardContent>
           </Card>
+        </div>
 
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-slate-800">📸 Decryption Interface Preview</CardTitle>
+        <div className="grid gap-6 grid-cols-1 lg:grid-cols-2">
+          <Card className="border-border/50">
+            <CardHeader className="pb-3">
+              <CardTitle className="text-base font-medium flex items-center gap-3">
+                <Upload className="h-5 w-5 text-blue-600" />
+                File Decryption Features
+              </CardTitle>
             </CardHeader>
-            <CardContent>
-              <p className="text-sm text-slate-600 italic">Screenshot showing the password prompt and decryption interface when clicking the Open button will be displayed here.</p>
+            <CardContent className="pt-0">
+              <ul className="text-sm text-muted-foreground space-y-2">
+                <li className="flex items-start gap-2">
+                  <span className="w-1.5 h-1.5 bg-blue-500 rounded-full mt-2 flex-shrink-0"></span>
+                  <span>Automatic download of decrypted original files</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="w-1.5 h-1.5 bg-green-500 rounded-full mt-2 flex-shrink-0"></span>
+                  <span>Preview support for images and documents</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="w-1.5 h-1.5 bg-purple-500 rounded-full mt-2 flex-shrink-0"></span>
+                  <span>File metadata display (size, type, upload date)</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="w-1.5 h-1.5 bg-orange-500 rounded-full mt-2 flex-shrink-0"></span>
+                  <span>Batch operations for multiple files</span>
+                </li>
+              </ul>
             </CardContent>
           </Card>
 
-          <div className="grid gap-4 md:grid-cols-2">
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-slate-800">📁 File Operations</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-slate-700 mb-3">After decrypting a file, you can:</p>
-                <ul className="text-sm text-slate-700 space-y-2">
-                  <li>• <strong>Preview Images:</strong> View images directly in the browser</li>
-                  <li>• <strong>Download Files:</strong> Get the original file in its native format</li>
-                  <li>• <strong>View Metadata:</strong> See file size, type, and storage details</li>
-                  <li>• <strong>Copy Links:</strong> Share IPFS links (note: password still required to decrypt)</li>
-                  <li>• <strong>Batch Operations:</strong> Manage multiple files at once</li>
-                </ul>
-              </CardContent>
-            </Card>
-            
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-slate-800">📝 Text Operations</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-slate-700 mb-3">After decrypting text, you can:</p>
-                <ul className="text-sm text-slate-700 space-y-2">
-                  <li>• <strong>Secure View:</strong> View text in a protected popup window</li>
-                  <li>• <strong>Copy to Clipboard:</strong> Quickly copy your sensitive text</li>
-                  <li>• <strong>Edit & Re-encrypt:</strong> Update your text and save changes</li>
-                  <li>• <strong>Export as TXT:</strong> Download text entries as files</li>
-                  <li>• <strong>Search Entries:</strong> Quickly find specific text entries</li>
-                </ul>
-              </CardContent>
-            </Card>
-          </div>
-
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-slate-800">🔐 How Decryption Works Behind the Scenes</CardTitle>
+          <Card className="border-border/50">
+            <CardHeader className="pb-3">
+              <CardTitle className="text-base font-medium flex items-center gap-3">
+                <FileText className="h-5 w-5 text-green-600" />
+                Text Decryption Features
+              </CardTitle>
             </CardHeader>
-            <CardContent>
-              <ol className="list-decimal list-inside text-sm text-slate-700 space-y-2 ml-2">
-                <li><strong>Password Verification:</strong> Your password decrypts the on-chain IPFS CID reference</li>
-                <li><strong>IPFS Retrieval:</strong> The encrypted data blob is fetched from IPFS using the CID</li>
-                <li><strong>Local Decryption:</strong> Data is decrypted in your browser using your password</li>
-                <li><strong>Secure Display:</strong> Decrypted content is rendered or made available for download locally</li>
-              </ol>
-              <div className="mt-4 bg-blue-50 border border-blue-200 rounded-lg p-4">
-                <p className="text-sm text-blue-800"><strong>Security Note:</strong> All decryption happens in your browser. Your password and decrypted data never leave your device.</p>
+            <CardContent className="pt-0">
+              <ul className="text-sm text-muted-foreground space-y-2">
+                <li className="flex items-start gap-2">
+                  <span className="w-1.5 h-1.5 bg-green-500 rounded-full mt-2 flex-shrink-0"></span>
+                  <span>Secure popup window for text viewing</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="w-1.5 h-1.5 bg-blue-500 rounded-full mt-2 flex-shrink-0"></span>
+                  <span>One-click copy to clipboard functionality</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="w-1.5 h-1.5 bg-purple-500 rounded-full mt-2 flex-shrink-0"></span>
+                  <span>Export as TXT file option</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="w-1.5 h-1.5 bg-orange-500 rounded-full mt-2 flex-shrink-0"></span>
+                  <span>Search functionality across all entries</span>
+                </li>
+              </ul>
+            </CardContent>
+          </Card>
+        </div>
+
+        <Card className="border-border/50">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-base font-medium">Technical Decryption Flow</CardTitle>
+          </CardHeader>
+          <CardContent className="pt-0">
+            <ol className="text-sm text-muted-foreground space-y-2">
+              <li className="flex gap-3">
+                <Badge variant="outline" className="text-xs min-w-fit">1</Badge>
+                <span>Decrypt on-chain CID reference using your password</span>
+              </li>
+              <li className="flex gap-3">
+                <Badge variant="outline" className="text-xs min-w-fit">2</Badge>
+                <span>Fetch encrypted content from IPFS using decrypted CID</span>
+              </li>
+              <li className="flex gap-3">
+                <Badge variant="outline" className="text-xs min-w-fit">3</Badge>
+                <span>Decrypt content locally in your browser with AES-256-GCM</span>
+              </li>
+              <li className="flex gap-3">
+                <Badge variant="outline" className="text-xs min-w-fit">4</Badge>
+                                <span>Render text or download file directly to your device</span>
+              </li>
+            </ol>
+          </CardContent>
+        </Card>
+
+        {/* Screenshots */}
+        <div className="grid gap-6 grid-cols-1 lg:grid-cols-2">
+          <Card className="border-border/50">
+            <CardContent className="p-6">
+              <div className="space-y-3">
+                <h4 className="text-sm font-medium text-foreground">My Vault Data Table</h4>
+                <div className="rounded-lg overflow-hidden border border-border/50">
+                  <Image 
+                    src="/vault-data-table.png" 
+                    alt="My Vault Data Table - Shows stored entries with names, types, tx hashes, and timestamps" 
+                    width={700} 
+                    height={500}
+                    className="w-full h-auto"
+                  />
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  Shows stored entries with names, types, tx hashes, and timestamps
+                </p>
               </div>
             </CardContent>
           </Card>
 
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-slate-800">⚠️ Password Recovery Warning</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-                <p className="text-sm text-red-800 mb-2"><strong>CRITICAL: No Password Recovery Available</strong></p>
-                <p className="text-sm text-red-700">Your encryption passwords are never stored anywhere—not on the blockchain, not on IPFS, and not on any server. If you lose a password, the associated data is permanently inaccessible. There is no password reset, recovery, or backdoor option. Always keep your passwords safe and backed up securely!</p>
+          <Card className="border-border/50">
+            <CardContent className="p-6">
+              <div className="space-y-3">
+                <h4 className="text-sm font-medium text-foreground">Decryption Modal</h4>
+                <div className="rounded-lg overflow-hidden border border-border/50">
+                  <Image 
+                    src="/decryption-modal.png" 
+                    alt="Decryption Modal - Shows password entry dialog when opening stored data" 
+                    width={500} 
+                    height={400}
+                    className="w-full h-auto"
+                  />
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  Shows password entry dialog when opening stored data
+                </p>
               </div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+
+      {/* Security Reminders */}
+      <div className="space-y-6">
+        <div className="space-y-4">
+          <h2 id="security-reminders" className="text-2xl font-semibold text-foreground">
+            Important Security Reminders
+          </h2>
+        </div>
+
+        <div className="grid gap-6 grid-cols-1 lg:grid-cols-2">
+          <Card className="border-red-200 dark:border-red-800">
+            <CardHeader className="pb-3">
+              <CardTitle className="text-base font-medium flex items-center gap-3 text-red-700 dark:text-red-400">
+                <AlertTriangle className="h-5 w-5" />
+                Critical Warnings
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="pt-0">
+              <ul className="text-sm text-red-600 dark:text-red-400 space-y-2">
+                <li className="flex items-start gap-2">
+                  <span className="w-1.5 h-1.5 bg-red-500 rounded-full mt-2 flex-shrink-0"></span>
+                  <span><strong>Lost passwords are permanently unrecoverable</strong> - there is no password reset</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="w-1.5 h-1.5 bg-red-500 rounded-full mt-2 flex-shrink-0"></span>
+                  <span>We cannot decrypt your data even if you request it</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="w-1.5 h-1.5 bg-red-500 rounded-full mt-2 flex-shrink-0"></span>
+                  <span>Always verify you're on the correct domain before connecting</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="w-1.5 h-1.5 bg-red-500 rounded-full mt-2 flex-shrink-0"></span>
+                  <span>Keep your MetaMask seed phrase secure and backed up</span>
+                </li>
+              </ul>
+            </CardContent>
+          </Card>
+
+          <Card className="border-green-200 dark:border-green-800">
+            <CardHeader className="pb-3">
+              <CardTitle className="text-base font-medium flex items-center gap-3 text-green-700 dark:text-green-400">
+                <Shield className="h-5 w-5" />
+                Best Practices
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="pt-0">
+              <ul className="text-sm text-green-600 dark:text-green-400 space-y-2">
+                <li className="flex items-start gap-2">
+                  <span className="w-1.5 h-1.5 bg-green-500 rounded-full mt-2 flex-shrink-0"></span>
+                  <span>Use a reputable password manager for encryption passwords</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="w-1.5 h-1.5 bg-green-500 rounded-full mt-2 flex-shrink-0"></span>
+                  <span>Create unique, strong passwords for sensitive entries</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="w-1.5 h-1.5 bg-green-500 rounded-full mt-2 flex-shrink-0"></span>
+                  <span>Regularly backup your important passwords securely</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="w-1.5 h-1.5 bg-green-500 rounded-full mt-2 flex-shrink-0"></span>
+                  <span>Keep your browser and MetaMask extension updated</span>
+                </li>
+              </ul>
+            </CardContent>
+          </Card>
+        </div>
+
+        <Alert>
+          <Lock className="h-4 w-4" />
+          <AlertDescription>
+            <strong>Zero-Knowledge Guarantee:</strong> Your encryption passwords never leave your device. All decryption 
+            happens locally in your browser. Even under legal compulsion, we cannot access your data because we don't 
+            possess the keys—they exist only during your active browser sessions.
+          </AlertDescription>
+        </Alert>
+      </div>
+
+      {/* Quick Reference */}
+      <div className="space-y-6">
+        <div className="space-y-4">
+          <h2 id="quick-reference" className="text-2xl font-semibold text-foreground">
+            Quick Reference Guide
+          </h2>
+        </div>
+
+        <Card className="border-border/50">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-base font-medium">Complete Workflow Summary</CardTitle>
+          </CardHeader>
+          <CardContent className="pt-0">
+            <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-5">
+              <div className="text-center space-y-2">
+                <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/20 rounded-full mx-auto flex items-center justify-center">
+                  <User className="h-6 w-6 text-blue-600" />
+                </div>
+                <div>
+                  <p className="text-sm font-medium">Setup Profile</p>
+                  <p className="text-xs text-muted-foreground">Connect wallet & create login</p>
+                </div>
+              </div>
+              <div className="text-center space-y-2">
+                <div className="w-12 h-12 bg-green-100 dark:bg-green-900/20 rounded-full mx-auto flex items-center justify-center">
+                  <Shield className="h-6 w-6 text-green-600" />
+                </div>
+                <div>
+                  <p className="text-sm font-medium">Login</p>
+                  <p className="text-xs text-muted-foreground">Access your dashboard</p>
+                                  </div>
+              </div>
+              <div className="text-center space-y-2">
+                <div className="w-12 h-12 bg-purple-100 dark:bg-purple-900/20 rounded-full mx-auto flex items-center justify-center">
+                  <Settings className="h-6 w-6 text-purple-600" />
+                </div>
+                <div>
+                  <p className="text-sm font-medium">Deploy Contract</p>
+                  <p className="text-xs text-muted-foreground">One-time vault setup</p>
+                </div>
+              </div>
+              <div className="text-center space-y-2">
+                <div className="w-12 h-12 bg-orange-100 dark:bg-orange-900/20 rounded-full mx-auto flex items-center justify-center">
+                  <Upload className="h-6 w-6 text-orange-600" />
+                </div>
+                <div>
+                  <p className="text-sm font-medium">Store Data</p>
+                  <p className="text-xs text-muted-foreground">Encrypt files & text</p>
+                </div>
+              </div>
+              <div className="text-center space-y-2">
+                <div className="w-12 h-12 bg-red-100 dark:bg-red-900/20 rounded-full mx-auto flex items-center justify-center">
+                  <Eye className="h-6 w-6 text-red-600" />
+                </div>
+                <div>
+                  <p className="text-sm font-medium">Access Vault</p>
+                  <p className="text-xs text-muted-foreground">Decrypt & retrieve</p>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <div className="grid gap-6 grid-cols-1 lg:grid-cols-2">
+          <Card className="border-border/50">
+            <CardHeader className="pb-3">
+              <CardTitle className="text-base font-medium">Key URLs</CardTitle>
+            </CardHeader>
+            <CardContent className="pt-0">
+              <div className="space-y-2">
+                <div className="flex items-center gap-2">
+                  <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
+                  <code className="text-xs bg-muted px-2 py-1 rounded">keyura.vercel.app/user-setup</code>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="w-2 h-2 bg-green-500 rounded-full"></span>
+                  <code className="text-xs bg-muted px-2 py-1 rounded">keyura.vercel.app/login</code>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="w-2 h-2 bg-purple-500 rounded-full"></span>
+                  <code className="text-xs bg-muted px-2 py-1 rounded">keyura.vercel.app/dashboard</code>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="border-border/50">
+            <CardHeader className="pb-3">
+              <CardTitle className="text-base font-medium">Remember</CardTitle>
+            </CardHeader>
+            <CardContent className="pt-0">
+              <ul className="text-sm text-muted-foreground space-y-1">
+                <li>• Login password ≠ Encryption password</li>
+                <li>• Each entry can have unique encryption</li>
+                <li>• Contract deployment is one-time only</li>
+                <li>• All decryption happens in your browser</li>
+                <li>• Lost passwords cannot be recovered</li>
+              </ul>
             </CardContent>
           </Card>
         </div>
