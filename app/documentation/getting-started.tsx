@@ -37,6 +37,10 @@ export default function GettingStarted() {
               </Badge>{" "}
               that happens entirely in your browser before touching the blockchain.
             </p>
+            <p className="text-sm text-muted-foreground leading-relaxed mt-3">
+              Name origin: <strong>Keyura</strong> wasn’t named by AI/GPT. I did the homework and chose it from
+              Sanskrit — it refers to a protective ornament historically worn by men — a nod to protection and trust.
+            </p>
           </div>
         </div>
 
