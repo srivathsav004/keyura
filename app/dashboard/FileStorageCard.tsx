@@ -52,7 +52,7 @@ export default function FileStorageCard({ userid, contractid, onStored }: Props)
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [status, setStatus] = useState<string>("");
 
-  const MAX_FILE_BYTES = 25 * 1024 * 1024; // 25 MB
+  const MAX_FILE_BYTES = 2 * 1024 * 1024; // 2 MB
 
   const isImage = useMemo(() => {
     return selectedFile ? selectedFile.type.startsWith("image/") : false;
@@ -203,7 +203,7 @@ export default function FileStorageCard({ userid, contractid, onStored }: Props)
           >
             <Upload className="h-8 w-8 text-slate-400 mx-auto mb-2" />
             <p className="text-sm text-slate-600">Click to add a file</p>
-            <p className="text-xs text-slate-400">Any file type • Max 25 MB</p>
+            <p className="text-xs text-slate-400">Any file type • Max 2 MB</p>
             <Input
               id="fileInput"
               ref={fileRef}
@@ -265,7 +265,7 @@ export default function FileStorageCard({ userid, contractid, onStored }: Props)
 
         <div className="text-xs text-slate-600 bg-slate-50 p-3 rounded-lg">
           <Database className="h-3 w-3 inline mr-1" />
-          Max file size: 25 MB. Files are encrypted locally, pinned to IPFS, and an on-chain pointer is recorded.
+          Max file size: 2 MB. Files are encrypted locally, pinned to IPFS, and an on-chain pointer is recorded.
         </div>
       </CardContent>
     </Card>
