@@ -112,7 +112,7 @@ const Pricing = () => {
                   Deploying your vault contract is a <span className="font-semibold">one‑time setup per user</span>.
                 </p>
                 <p className="text-slate-600 text-sm mt-1">
-                  After deployment, you only pay gas when you store or update data on chain.
+                  After deployment, you only pay gas when you store data on chain.
                 </p>
               </div>
             </div>
