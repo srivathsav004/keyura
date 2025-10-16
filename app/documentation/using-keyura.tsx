@@ -20,6 +20,7 @@ import {
   Key
 } from "lucide-react";
 import Image from "next/image";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 
 export default function UsingKeyura() {
   return (
@@ -173,7 +174,7 @@ export default function UsingKeyura() {
           <h2 id="login-dashboard" className="text-2xl font-semibold text-foreground">
             Step 2: Login & Dashboard Access
           </h2>
-                    <p className="text-muted-foreground leading-relaxed">
+          <p className="text-muted-foreground leading-relaxed">
             After completing your profile setup, you'll be redirected to the login page to access your secure dashboard.
           </p>
         </div>
@@ -326,7 +327,7 @@ export default function UsingKeyura() {
               <CardTitle className="text-base font-medium">Using Existing Contract</CardTitle>
             </CardHeader>
             <CardContent className="pt-0">
-                            <div className="space-y-3">
+              <div className="space-y-3">
                 <p className="text-sm text-muted-foreground">
                   If you already have a deployed Keyura contract, you can use it instead of deploying a new one.
                 </p>
@@ -350,47 +351,50 @@ export default function UsingKeyura() {
         </div>
 
         {/* Screenshots */}
-        <div className="grid gap-6 grid-cols-1 lg:grid-cols-2">
-          <Card className="border-border/50">
-            <CardContent className="p-6">
-              <div className="space-y-3">
-                <h4 className="text-sm font-medium text-foreground">Empty Contract Settings</h4>
-                <div className="rounded-lg overflow-hidden border border-border/50">
-                  <Image 
-                    src="/empty-contract-settings.png" 
-                    alt="Empty Contract Settings - Shows initial state before contract deployment" 
-                    width={600} 
-                    height={400}
-                    className="w-full h-auto"
-                  />
+        <Card className="border-border/50">
+          <CardContent className="p-6">
+            <Tabs defaultValue="empty" className="w-full">
+              <TabsList className="w-full justify-start gap-2 overflow-x-auto">
+                <TabsTrigger value="empty">Empty Contract Settings</TabsTrigger>
+                <TabsTrigger value="deploy">Contract Deployment</TabsTrigger>
+              </TabsList>
+              <TabsContent value="empty">
+                <div className="space-y-3">
+                  <h4 className="text-sm font-medium text-foreground">Empty Contract Settings</h4>
+                  <div className="rounded-lg overflow-hidden border border-border/50">
+                    <Image 
+                      src="/empty-contract-settings.png" 
+                      alt="Empty Contract Settings - Shows initial state before contract deployment" 
+                      width={800} 
+                      height={600}
+                      className="w-full h-auto"
+                    />
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    Shows initial state before contract deployment
+                  </p>
                 </div>
-                <p className="text-xs text-muted-foreground">
-                  Shows initial state before contract deployment
-                </p>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="border-border/50">
-            <CardContent className="p-6">
-              <div className="space-y-3">
-                <h4 className="text-sm font-medium text-foreground">Contract Deployment</h4>
-                <div className="rounded-lg overflow-hidden border border-border/50">
-                  <Image 
-                    src="/contract-deployment.png" 
-                    alt="Contract Deployment - Shows deployment process and confirmation" 
-                    width={600} 
-                    height={400}
-                    className="w-full h-auto"
-                  />
+              </TabsContent>
+              <TabsContent value="deploy">
+                <div className="space-y-3">
+                  <h4 className="text-sm font-medium text-foreground">Contract Deployment</h4>
+                  <div className="rounded-lg overflow-hidden border border-border/50">
+                    <Image 
+                      src="/contract-deployment.png" 
+                      alt="Contract Deployment - Shows deployment process and confirmation" 
+                      width={800} 
+                      height={600}
+                      className="w-full h-auto"
+                    />
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    Shows deployment process and confirmation
+                  </p>
                 </div>
-                <p className="text-xs text-muted-foreground">
-                  Shows deployment process and confirmation
-                </p>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
+              </TabsContent>
+            </Tabs>
+          </CardContent>
+        </Card>
 
       </div>
 
@@ -691,73 +695,68 @@ export default function UsingKeyura() {
               </div>
             </CardContent>
           </Card>
-        </div>
 
-        <Card className="border-border/50">
-          <CardHeader className="pb-3">
-            <CardTitle className="text-base font-medium">Technical Decryption Flow</CardTitle>
-          </CardHeader>
-          <CardContent className="pt-0">
-            <ol className="text-sm text-muted-foreground space-y-2">
-              <li className="flex gap-3">
-                <Badge variant="outline" className="text-xs min-w-fit">1</Badge>
-                <span>Decrypt on-chain CID reference using your password</span>
-              </li>
-              <li className="flex gap-3">
-                <Badge variant="outline" className="text-xs min-w-fit">2</Badge>
-                <span>Fetch encrypted content from IPFS using decrypted CID</span>
-              </li>
-              <li className="flex gap-3">
-                <Badge variant="outline" className="text-xs min-w-fit">3</Badge>
-                <span>Decrypt content locally in your browser with AES-256-GCM</span>
-              </li>
-              <li className="flex gap-3">
-                <Badge variant="outline" className="text-xs min-w-fit">4</Badge>
-                                <span>Render text or download file directly to your device</span>
-              </li>
-            </ol>
-          </CardContent>
-        </Card>
-
-        {/* Screenshots */}
-        <div className="grid gap-6 grid-cols-1 lg:grid-cols-2">
+          {/* Screenshots: My Vault & Decryption Modal */}
           <Card className="border-border/50">
-            <CardContent className="p-6">
-              <div className="space-y-3">
-                <h4 className="text-sm font-medium text-foreground">My Vault Data Table</h4>
-                <div className="rounded-lg overflow-hidden border border-border/50">
-                  <Image 
-                    src="/vault-data-table.png" 
-                    alt="My Vault Data Table - Shows stored entries with names, types, tx hashes, and timestamps" 
-                    width={700} 
-                    height={500}
-                    className="w-full h-auto"
-                  />
-                </div>
-                <p className="text-xs text-muted-foreground">
-                  Shows stored entries with names, types, tx hashes, and timestamps
-                </p>
-              </div>
+            <CardHeader className="pb-3">
+              <CardTitle className="text-base font-medium">My Vault: Screens & Actions</CardTitle>
+            </CardHeader>
+            <CardContent className="pt-0">
+              <Tabs defaultValue="table" className="w-full">
+                <TabsList className="w-full justify-start gap-2 overflow-x-auto">
+                  <TabsTrigger value="table">My Vault Data Table</TabsTrigger>
+                  <TabsTrigger value="modal">Decryption Modal</TabsTrigger>
+                </TabsList>
+                <TabsContent value="table">
+                  <div className="rounded-lg overflow-hidden border border-border/50">
+                    <Image
+                      src="/vault-data-table.png"
+                      alt="My Vault Data Table - Shows stored entries with names, types, tx hashes, and timestamps"
+                      width={800}
+                      height={600}
+                      className="w-full h-auto"
+                    />
+                  </div>
+                </TabsContent>
+                <TabsContent value="modal">
+                  <div className="rounded-lg overflow-hidden border border-border/50">
+                    <Image
+                      src="/decryption-modal.png"
+                      alt="Decryption Modal - Shows password entry dialog when opening stored data"
+                      width={800}
+                      height={600}
+                      className="w-full h-auto"
+                    />
+                  </div>
+                </TabsContent>
+              </Tabs>
             </CardContent>
           </Card>
 
+          {/* Technical Flow */}
           <Card className="border-border/50">
-            <CardContent className="p-6">
-              <div className="space-y-3">
-                <h4 className="text-sm font-medium text-foreground">Decryption Modal</h4>
-                <div className="rounded-lg overflow-hidden border border-border/50">
-                  <Image 
-                    src="/decryption-modal.png" 
-                    alt="Decryption Modal - Shows password entry dialog when opening stored data" 
-                    width={500} 
-                    height={400}
-                    className="w-full h-auto"
-                  />
-                </div>
-                <p className="text-xs text-muted-foreground">
-                  Shows password entry dialog when opening stored data
-                </p>
-              </div>
+            <CardHeader className="pb-3">
+              <CardTitle className="text-base font-medium">Technical Decryption Flow</CardTitle>
+            </CardHeader>
+            <CardContent className="pt-0">
+              <ol className="text-sm text-muted-foreground space-y-2">
+                <li className="flex gap-3">
+                  <Badge variant="outline" className="text-xs min-w-fit">1</Badge>
+                  <span>Decrypt on-chain CID reference using your password</span>
+                </li>
+                <li className="flex gap-3">
+                  <Badge variant="outline" className="text-xs min-w-fit">2</Badge>
+                  <span>Fetch encrypted content from IPFS using decrypted CID</span>
+                </li>
+                <li className="flex gap-3">
+                  <Badge variant="outline" className="text-xs min-w-fit">3</Badge>
+                  <span>Decrypt content locally in your browser with AES-256-GCM</span>
+                </li>
+                <li className="flex gap-3">
+                  <Badge variant="outline" className="text-xs min-w-fit">4</Badge>
+                  <span>Render text or download file directly to your device</span>
+                </li>
+              </ol>
             </CardContent>
           </Card>
         </div>
