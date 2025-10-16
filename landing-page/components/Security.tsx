@@ -76,7 +76,7 @@ const Security = () => {
           className="text-center mb-16"
         >
           <h2 className="text-3xl sm:text-4xl font-bold text-primary mb-4">
-            Bank-Level Security Architecture
+            Security Architecture
           </h2>
           <p className="text-xl text-slate-600 max-w-3xl mx-auto">
             Our security infrastructure combines the best of blockchain technology, 
