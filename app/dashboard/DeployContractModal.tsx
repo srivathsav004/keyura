@@ -120,8 +120,8 @@ export default function DeployContractModal({
 
   if (!open) return null;
   return (
-    <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm overflow-hidden">
-      <div className="min-h-full flex items-center justify-center p-4 animate-in fade-in duration-200">
+    <div className="fixed inset-0 z-[120] bg-black/70 backdrop-blur-sm overflow-hidden">
+      <div className="min-h-screen flex items-center justify-center p-4 animate-in fade-in duration-200">
         <Card className="w-full max-w-2xl max-h-[90vh] shadow-2xl border-2 border-emerald-200 bg-white overflow-y-auto">
         <CardHeader className="relative pb-4 border-b bg-gradient-to-r from-emerald-50 to-teal-50">
           <button

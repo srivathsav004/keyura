@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import DeployContractModal from "./DeployContractModal";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
-import { Rocket, Link2, Sparkles, CheckCircle2, ArrowRight, Loader2, Zap } from "lucide-react";
+import { Rocket, Link2, Sparkles, CheckCircle2, ArrowRight, Loader2 } from "lucide-react";
 import type { Contract } from "@/services/contracts";
 
 type Props = {
@@ -60,7 +60,7 @@ const OnboardingState = ({
         transition={{ duration: 0.5, delay: 0.1 }}
         className="text-center space-y-4"
       >
-        <Badge className="bg-emerald-50 text-emerald-700 border border-emerald-200 tracking-wider text-xs px-3 py-1 uppercase">
+        <Badge className="bg-emerald-50 text-emerald-700 border border-emerald-200 tracking-wider text-xs px-3 py-1 uppercase hover:bg-emerald-50 hover:text-emerald-700">
           Keyura Vault Setup
         </Badge>
         {/* Updated Header Title */}
@@ -127,7 +127,7 @@ const OnboardingState = ({
               </motion.div>
 
               <p className="text-sm text-slate-500 text-center flex items-center justify-center pt-2">
-                <Zap className="h-4 w-4 inline mr-1 text-slate-400" />
+                <span className="text-lg leading-none mr-1">•</span>
                 Gas fees apply
               </p>
             </CardContent>
@@ -226,7 +226,7 @@ const OnboardingState = ({
 
               {/* Legal/Disclaimer Text */}
               <p className="text-sm text-slate-500 flex items-center justify-center pt-2">
-                <Zap className="h-4 w-4 inline mr-1 text-slate-400" />
+                <span className="text-lg leading-none mr-1">•</span>
                 No gas fee required for linking an existing contract.
               </p>
             </CardContent>
