@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Wallet, Settings, LogOut, KeyRound } from "lucide-react";
+import { Wallet, LogOut, KeyRound } from "lucide-react";
 
 type Props = {
   onLogout?: () => void;
@@ -23,9 +23,6 @@ const DashboardHeader = ({ onLogout, addressShort = "0x" }: Props) => (
           <Wallet className="h-3 w-3 mr-1" />
           Connected
         </Badge>
-        <Button variant="ghost" size="sm" title="Settings">
-          <Settings className="h-4 w-4" />
-        </Button>
         <Button variant="ghost" size="sm" onClick={onLogout} title="Logout">
           <LogOut className="h-4 w-4" />
         </Button>

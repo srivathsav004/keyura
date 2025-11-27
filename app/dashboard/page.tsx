@@ -27,6 +27,7 @@ export default function DashboardPage() {
   const [setupBusy, setSetupBusy] = useState(false);
   const [setupStatus, setSetupStatus] = useState<string | null>(null);
   const [setupError, setSetupError] = useState<string | null>(null);
+  const [initializing, setInitializing] = useState(true);
   const useridNum = uid ? Number(uid) : null;
 
   useEffect(() => {
@@ -50,6 +51,7 @@ export default function DashboardPage() {
     const run = async () => {
       if (!useridNum) return;
       try {
+        setInitializing(true);
         setLoading(true);
         const [c, s, e] = await Promise.all([
           getUserContract(useridNum),
@@ -63,6 +65,7 @@ export default function DashboardPage() {
         // noop, UI will show empty
       } finally {
         setLoading(false);
+        setInitializing(false);
       }
     };
     run();
@@ -132,6 +135,19 @@ export default function DashboardPage() {
               <div className="text-center space-y-4">
                 <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-600"></div>
                 <p className="text-slate-600">Loading...</p>
+              </div>
+            </motion.div>
+          ) : initializing ? (
+            <motion.div
+              key="initializing"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="flex items-center justify-center min-h-[400px]"
+            >
+              <div className="text-center space-y-4">
+                <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-600"></div>
+                <p className="text-slate-600">Preparing your dashboard…</p>
               </div>
             </motion.div>
           ) : !contract ? (
