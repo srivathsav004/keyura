@@ -7,9 +7,9 @@ import StatsCard from "./StatsCard";
 import TextStorageCard from "./TextStorageCard";
 import FileStorageCard from "./FileStorageCard";
 import VaultSection from "./VaultSection";
-import SettingsSection from "./SettingsSection";
+import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Database, FileText, Upload, Shield, Plus, Eye, Settings } from "lucide-react";
+import { Database, FileText, Upload, Shield, Plus, Eye, ShieldAlert } from "lucide-react";
 import { getUserContract, createContract, Contract } from "@/services/contracts";
 import { getStats, listEntries, StatsResponse, TextEntry, FileEntry } from "@/services/entries";
 import OnboardingState from "./OnboardingState";
@@ -179,9 +179,9 @@ export default function DashboardPage() {
                     <Eye className="h-4 w-4" />
                     <span>My Vault</span>
                   </TabsTrigger>
-                  <TabsTrigger value="settings" className="flex items-center space-x-2 data-[state=active]:bg-emerald-50 data-[state=active]:text-emerald-700">
-                    <Settings className="h-4 w-4" />
-                    <span>Settings</span>
+                  <TabsTrigger value="recovery" className="flex items-center space-x-2 data-[state=active]:bg-emerald-50 data-[state=active]:text-emerald-700">
+                    <ShieldAlert className="h-4 w-4" />
+                    <span>Recovery</span>
                   </TabsTrigger>
                 </TabsList>
 
@@ -196,8 +196,32 @@ export default function DashboardPage() {
                   <VaultSection entries={entries} />
                 </TabsContent>
 
-                <TabsContent value="settings" className="mt-6">
-                  <SettingsSection contractAddress={contract.contract_address} />
+                <TabsContent value="recovery" className="mt-6">
+                  <Card className="border border-emerald-200 shadow-lg bg-gradient-to-br from-white to-emerald-50">
+                    <CardContent className="space-y-4 py-6">
+                      <div className="flex items-center gap-3">
+                        <div className="p-2 rounded-full bg-emerald-100 text-emerald-700">
+                          <ShieldAlert className="h-5 w-5" />
+                        </div>
+                        <div>
+                          <h3 className="text-lg font-semibold text-slate-900">Your Recovery Contract</h3>
+                          <p className="text-sm text-slate-600">
+                            Save this address somewhere offline. In the unlikely event Keyura is unavailable, this contract
+                            lets you rehydrate your encrypted data.
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="rounded-xl border border-emerald-200 bg-white p-4">
+                        <p className="text-xs uppercase tracking-wider text-slate-500 mb-1">Contract Address</p>
+                        <p className="font-mono text-base break-all text-slate-900">{contract.contract_address}</p>
+                      </div>
+
+                      <p className="text-xs text-slate-500">
+                        Think of this as your vault recovery key. Store it securely with the same care you give your seed phrase.
+                      </p>
+                    </CardContent>
+                  </Card>
                 </TabsContent>
               </Tabs>
             </motion.div>
