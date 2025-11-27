@@ -29,6 +29,7 @@ export default function DashboardPage() {
   const [setupError, setSetupError] = useState<string | null>(null);
   const [initializing, setInitializing] = useState(true);
   const useridNum = uid ? Number(uid) : null;
+  const [lastRefresh, setLastRefresh] = useState("");
 
   useEffect(() => {
     try {
@@ -61,8 +62,9 @@ export default function DashboardPage() {
         setContract(c || null);
         setStats(s);
         setEntries(e);
+        setLastRefresh(new Date().toLocaleTimeString());
       } catch (e) {
-        // noop, UI will show empty
+        // noop
       } finally {
         setLoading(false);
         setInitializing(false);
@@ -76,6 +78,7 @@ export default function DashboardPage() {
     const [s, e] = await Promise.all([getStats(useridNum), listEntries(useridNum)]);
     setStats(s);
     setEntries(e);
+    setLastRefresh(new Date().toLocaleTimeString());
   };
 
   const handleUseExisting = async () => {
@@ -109,6 +112,7 @@ export default function DashboardPage() {
       setContract(created);
       setSetupStatus("Contract linked successfully.");
       setSetupAddress("");
+      setLastRefresh(new Date().toLocaleTimeString());
     } catch (err: any) {
       console.error("Link contract failed", err);
       setSetupError(err?.message || "Unable to link this contract. Please try again.");
@@ -179,26 +183,27 @@ export default function DashboardPage() {
               className="space-y-6"
             >
               <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-                <StatsCard title="Total Entries" value={stats?.total_entries ?? 0} icon={<Database className="h-5 w-5" />} trend={loading ? "loading..." : undefined} />
+                <StatsCard title="Total Entries" value={stats?.total_entries ?? 0} icon={<Database className="h-5 w-5" />} />
                 <StatsCard title="Text Notes" value={stats?.text_entries ?? 0} icon={<FileText className="h-5 w-5" />} />
                 <StatsCard title="Files Stored" value={stats?.file_entries ?? 0} icon={<Upload className="h-5 w-5" />} />
-                <StatsCard title="Security" value="Active" icon={<Shield className="h-5 w-5" />} trend="Contract deployed" />
+                <StatsCard title="Encryption" value="Wallet + AES" icon={<Shield className="h-5 w-5" />} />
               </div>
 
               <Tabs defaultValue="store" className="space-y-6">
-                <TabsList className="grid w-full grid-cols-3 bg-white/80 backdrop-blur-sm border border-slate-200">
-                  <TabsTrigger value="store" className="flex items-center space-x-2 data-[state=active]:bg-emerald-50 data-[state=active]:text-emerald-700">
-                    <Plus className="h-4 w-4" />
-                    <span>Store Data</span>
-                  </TabsTrigger>
-                  <TabsTrigger value="vault" className="flex items-center space-x-2 data-[state=active]:bg-emerald-50 data-[state=active]:text-emerald-700">
-                    <Eye className="h-4 w-4" />
-                    <span>My Vault</span>
-                  </TabsTrigger>
-                  <TabsTrigger value="recovery" className="flex items-center space-x-2 data-[state=active]:bg-emerald-50 data-[state=active]:text-emerald-700">
-                    <ShieldAlert className="h-4 w-4" />
-                    <span>Recovery</span>
-                  </TabsTrigger>
+                <TabsList className="flex w-full gap-2 bg-white rounded-full border border-slate-200 p-1 shadow-sm">
+                  {[
+                    { value: "store", label: "Store", icon: <Plus className="h-4 w-4" /> },
+                    { value: "vault", label: "Vault", icon: <Eye className="h-4 w-4" /> },
+                    { value: "recovery", label: "Recovery", icon: <ShieldAlert className="h-4 w-4" /> },
+                  ].map((tab) => (
+                    <TabsTrigger
+                      key={tab.value}
+                      value={tab.value}
+                      className="flex-1 rounded-full px-4 py-2 text-sm font-medium text-slate-500 transition data-[state=active]:bg-emerald-600 data-[state=active]:text-white data-[state=active]:shadow"
+                    >
+                      <span className="flex items-center gap-2 justify-center">{tab.icon}{tab.label}</span>
+                    </TabsTrigger>
+                  ))}
                 </TabsList>
 
                 <TabsContent value="store" className="mt-6">
