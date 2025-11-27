@@ -5,6 +5,13 @@ import { Eye, Key, X } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import type { TextEntry, FileEntry } from "@/services/entries";
 import { useMemo, useState } from "react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 function base64ToBytes(b64: string): Uint8Array {
   const bin = atob(b64);
@@ -101,7 +108,7 @@ export default function VaultSection({ entries }: { entries: (TextEntry | FileEn
       <Card className="border-slate-200">
         <CardHeader>
           <CardTitle className="flex items-center space-x-2">
-            <Key className="h-5 w-5 text-emerald-600" />
+            {/* <Key className="h-5 w-5 text-emerald-600" /> */}
             <span>Access Your Vault</span>
           </CardTitle>
           <CardDescription>Use your password and wallet to decrypt when viewing entries.</CardDescription>
@@ -109,24 +116,38 @@ export default function VaultSection({ entries }: { entries: (TextEntry | FileEn
         <CardContent>
           <div className="flex flex-col md:flex-row md:items-center gap-3">
             <Input placeholder="Search your entries..." value={q} onChange={(e) => setQ(e.target.value)} className="md:flex-1 border-slate-200 focus:border-emerald-500" />
-            <select
-              className="border rounded px-2 py-1 text-sm"
+            <Select
               value={typeFilter}
-              onChange={(e) => { setTypeFilter(e.target.value as any); setPage(1); }}
+              onValueChange={(value) => {
+                setTypeFilter(value as any);
+                setPage(1);
+              }}
             >
-              <option value="all">All</option>
-              <option value="text">Text</option>
-              <option value="file">Files</option>
-            </select>
-            <select
-              className="border rounded px-2 py-1 text-sm"
-              value={pageSize}
-              onChange={(e) => { setPageSize(Number(e.target.value)); setPage(1); }}
+              <SelectTrigger className="w-full md:w-[150px] border-slate-200 focus-visible:ring-emerald-500">
+                <SelectValue placeholder="Type" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All entries</SelectItem>
+                <SelectItem value="text">Text only</SelectItem>
+                <SelectItem value="file">Files only</SelectItem>
+              </SelectContent>
+            </Select>
+            <Select
+              value={String(pageSize)}
+              onValueChange={(value) => {
+                setPageSize(Number(value));
+                setPage(1);
+              }}
             >
-              <option value={10}>10 / page</option>
-              <option value={20}>20 / page</option>
-              <option value={50}>50 / page</option>
-            </select>
+              <SelectTrigger className="w-full md:w-[150px] border-slate-200 focus-visible:ring-emerald-500">
+                <SelectValue placeholder="Per page" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="10">10 / page</SelectItem>
+                <SelectItem value="20">20 / page</SelectItem>
+                <SelectItem value="50">50 / page</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
         </CardContent>
       </Card>
