@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { useEffect, useMemo, useState } from "react";
 import { ABI, BYTECODE } from "./contractBytecode";
@@ -9,16 +9,20 @@ import { createContract, Contract } from "@/services/contracts";
 import { Rocket, CheckCircle2, X, Loader2, Wallet, AlertCircle } from "lucide-react";
 
 // Lightweight modal using shadcn Card; no Dialog dependency to keep it simple and robust.
+export type DeploymentPhase = "idle" | "connecting" | "deploying" | "waiting" | "saving" | "success" | "error";
+
 export default function DeployContractModal({
   open,
   onClose,
   userid,
   onDeployed,
+  onPhaseChange,
 }: {
   open: boolean;
   onClose: () => void;
   userid: number;
   onDeployed: (c: Contract) => void;
+  onPhaseChange?: (phase: DeploymentPhase) => void;
 }) {
   const [expectedWallet, setExpectedWallet] = useState<string>("");
   const [connectedWallet, setConnectedWallet] = useState<string>("");
@@ -41,9 +45,19 @@ export default function DeployContractModal({
     return !!expectedWallet && !!connectedWallet && expectedWallet.toLowerCase() === connectedWallet.toLowerCase();
   }, [expectedWallet, connectedWallet]);
 
+  const emitPhase = (phase: DeploymentPhase) => {
+    onPhaseChange?.(phase);
+  };
+
+  const handleClose = () => {
+    emitPhase("idle");
+    onClose();
+  };
+
   const connectWallet = async () => {
     setError("");
     setStatus("Connecting wallet...");
+    emitPhase("connecting");
     try {
       if (!(window as any).ethereum) throw new Error("MetaMask not detected");
       const { BrowserProvider } = await import("ethers");
@@ -53,15 +67,18 @@ export default function DeployContractModal({
       const addr = await signer.getAddress();
       setConnectedWallet(addr);
       setStatus("Wallet connected");
+      emitPhase("idle");
     } catch (e: any) {
       setError(e?.message || "Failed to connect wallet");
       setStatus("");
+      emitPhase("error");
     }
   };
 
   const handleDeploy = async () => {
     setError("");
     setStatus("Preparing deployment...");
+    emitPhase("deploying");
     setBusy(true);
     try {
       if (!(window as any).ethereum) throw new Error("MetaMask not detected");
@@ -80,6 +97,7 @@ export default function DeployContractModal({
       }
 
       setStatus("Deploying contract (please confirm in wallet)...");
+      emitPhase("deploying");
 
       if (!BYTECODE || BYTECODE.length <= 2) {
         throw new Error("Contract bytecode not configured. Please add BYTECODE in contractBytecode.ts");
@@ -90,15 +108,18 @@ export default function DeployContractModal({
       const contract = await factory.deploy({ type: 0 });
 
       setStatus("Waiting for deployment...");
+      emitPhase("waiting");
       await contract.waitForDeployment();
       const deployedAddress: string = (contract as any).target || (contract as any).address;
       if (!deployedAddress) throw new Error("Failed to get deployed contract address");
 
       setStatus("Saving contract to backend...");
+      emitPhase("saving");
       const saved = await createContract(userid, deployedAddress);
       setStatus("Contract deployed and saved");
+      emitPhase("success");
       onDeployed(saved);
-      onClose();
+      handleClose();
     } catch (e: any) {
       const raw = e?.info?.error?.message || e?.data?.message || e?.reason || e?.shortMessage || e?.message || "Unknown error";
       let msg = String(raw);
@@ -113,6 +134,7 @@ export default function DeployContractModal({
       }
       setError(msg);
       setStatus("");
+      emitPhase("error");
     } finally {
       setBusy(false);
     }
@@ -125,7 +147,7 @@ export default function DeployContractModal({
         <Card className="w-full max-w-2xl max-h-[90vh] shadow-2xl border-2 border-emerald-200 bg-white overflow-y-auto">
         <CardHeader className="relative pb-4 border-b bg-gradient-to-r from-emerald-50 to-teal-50">
           <button
-            onClick={onClose}
+            onClick={handleClose}
             disabled={busy}
             className="absolute top-4 right-4 p-1.5 rounded-lg hover:bg-white/80 transition-colors disabled:opacity-50"
             aria-label="Close"

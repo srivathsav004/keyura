@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import DeployContractModal from "./DeployContractModal";
+import DeployContractModal, { DeploymentPhase } from "./DeployContractModal";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import { Rocket, Link2, Sparkles, CheckCircle2, ArrowRight, Loader2 } from "lucide-react";
@@ -32,6 +32,8 @@ const OnboardingState = ({
   setupStatus,
 }: Props) => {
   const [deployOpen, setDeployOpen] = useState(false);
+  const [deployPhase, setDeployPhase] = useState<DeploymentPhase>("idle");
+  const [successPending, setSuccessPending] = useState(false);
 
   const deployFeatures = [
     "Full admin rights remain with your connected wallet.",
@@ -44,10 +46,31 @@ const OnboardingState = ({
     "Full access to your historical and current data.",
   ];
 
+  const phaseCopy: Record<DeploymentPhase, string | null> = {
+    idle: null,
+    connecting: "Connecting wallet…",
+    deploying: "Please confirm the transaction in MetaMask…",
+    waiting: "Waiting for on-chain confirmation…",
+    saving: "Finalizing deployment…",
+    success: "Contract deployed! Loading your dashboard…",
+    error: "Deployment interrupted. Please try again.",
+  };
+
   const fadeIn = {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0 },
   };
+
+  const handleModalDeployed = (contract: Contract) => {
+    setDeployPhase("success");
+    setSuccessPending(true);
+    setTimeout(() => {
+      onDeployed(contract);
+      setTimeout(() => setSuccessPending(false), 400);
+    }, 900);
+  };
+
+  const phaseMessage = phaseCopy[deployPhase];
 
   return (
     // Minimized top padding (py-12 -> py-8) and increased max width (max-w-5xl -> max-w-6xl)
@@ -71,6 +94,25 @@ const OnboardingState = ({
         <p className="text-lg text-slate-600 max-w-3xl mx-auto">
           Welcome to Keyura! Get started by deploying your personal smart contract vault for full, decentralized control, or connect an existing one you already own.
         </p>
+
+        <AnimatePresence>
+          {phaseMessage && (
+            <motion.div
+              key={deployPhase}
+              initial={{ opacity: 0, y: -8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium ${
+                deployPhase === "error"
+                  ? "bg-red-50 text-red-700 border border-red-100"
+                  : "bg-emerald-50 text-emerald-700 border border-emerald-100"
+              }`}
+            >
+              <span className="text-lg leading-none">•</span>
+              {phaseMessage}
+            </motion.div>
+          )}
+        </AnimatePresence>
       </motion.div>
 
       {/* Contract Options Section */}
@@ -234,15 +276,27 @@ const OnboardingState = ({
         </motion.div>
       </section>
       
+      <AnimatePresence>
+        {successPending && (
+          <motion.div
+            key="deploy-success-banner"
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 16 }}
+            className="fixed bottom-6 left-1/2 -translate-x-1/2 bg-white border border-emerald-200 shadow-2xl rounded-full px-6 py-3 text-sm font-medium text-emerald-700 z-[130]"
+          >
+            Vault ready! Redirecting to your dashboard…
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Deploy Modal */}
       <DeployContractModal
         open={deployOpen}
         onClose={() => setDeployOpen(false)}
         userid={userid}
-        onDeployed={(c) => {
-          onDeployed(c);
-          setDeployOpen(false);
-        }}
+        onDeployed={handleModalDeployed}
+        onPhaseChange={(phase) => setDeployPhase(phase)}
       />
     </div>
   );
