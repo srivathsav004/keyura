@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { createContract, Contract } from "@/services/contracts";
+import { Rocket, CheckCircle2, X, Loader2, Wallet, AlertCircle } from "lucide-react";
 
 // Lightweight modal using shadcn Card; no Dialog dependency to keep it simple and robust.
 export default function DeployContractModal({
@@ -119,43 +120,130 @@ export default function DeployContractModal({
 
   if (!open) return null;
   return (
-    <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm grid place-items-center p-4">
-      <Card className="w-full max-w-lg">
-        <CardHeader>
-          <CardTitle>Deploy Personal Storage Contract</CardTitle>
-          <CardDescription>
-            One-time setup to create your on-chain storage contract. You can view this address later in Settings.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="text-sm text-slate-600">
-            - Ensure you are connected with your Keyura wallet.
-            <br />- You will be asked to confirm a transaction in MetaMask and pay gas fees.
-            <br />- This is a one-time deployment for your account.
-          </div>
-          <div className="grid grid-cols-1 gap-2 text-sm">
+    <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm overflow-hidden">
+      <div className="min-h-full flex items-center justify-center p-4 animate-in fade-in duration-200">
+        <Card className="w-full max-w-2xl max-h-[90vh] shadow-2xl border-2 border-emerald-200 bg-white overflow-y-auto">
+        <CardHeader className="relative pb-4 border-b bg-gradient-to-r from-emerald-50 to-teal-50">
+          <button
+            onClick={onClose}
+            disabled={busy}
+            className="absolute top-4 right-4 p-1.5 rounded-lg hover:bg-white/80 transition-colors disabled:opacity-50"
+            aria-label="Close"
+          >
+            <X className="h-4 w-4 text-slate-600" />
+          </button>
+          <div className="flex items-center gap-3 pr-8">
+            {/* <div className="p-2 rounded-lg bg-emerald-100">
+              <Rocket className="h-6 w-6 text-emerald-600" />
+            </div> */}
             <div>
-              <div className="text-slate-500">Expected wallet (from login)</div>
-              <Input readOnly value={expectedWallet || "Unknown"} className="font-mono" />
+              <CardTitle className="text-2xl">Deploy Your Storage Contract</CardTitle>
+              <CardDescription className="text-sm mt-1">
+                One-time setup to create your personal on-chain storage contract
+              </CardDescription>
             </div>
-            <div>
-              <div className="text-slate-500">Connected wallet (MetaMask)</div>
-              <div className="flex gap-2">
-                <Input readOnly value={connectedWallet || "Not connected"} className="font-mono" />
-                <Button variant="outline" onClick={connectWallet}>Connect</Button>
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-6 pt-6">
+
+          {/* Wallet Connection */}
+          <div className="space-y-4 p-4 rounded-lg border-2 border-slate-200 bg-slate-50/50">
+            <div className="space-y-3">
+              <div>
+                <label className="text-sm font-medium text-slate-700 mb-2 block flex items-center gap-2">
+                  <Wallet className="h-4 w-4" />
+                  Expected Wallet (from login)
+                </label>
+                <Input
+                  readOnly
+                  value={expectedWallet || "Unknown"}
+                  className="font-mono text-sm bg-white border-slate-300"
+                />
+              </div>
+              <div>
+                <label className="text-sm font-medium text-slate-700 mb-2 block">Connected Wallet (MetaMask)</label>
+                <div className="flex gap-2">
+                  <Input
+                    readOnly
+                    value={connectedWallet || "Not connected"}
+                    className="font-mono text-sm bg-white border-slate-300 flex-1"
+                  />
+                  <Button
+                    variant="outline"
+                    onClick={connectWallet}
+                    disabled={busy}
+                    className="border-emerald-300 hover:bg-emerald-50 hover:border-emerald-400"
+                  >
+                    <Wallet className="h-4 w-4 mr-2" />
+                    Connect
+                  </Button>
+                </div>
               </div>
             </div>
+
+            {canDeploy && (
+              <div className="flex items-center gap-2 p-3 rounded-lg bg-emerald-50 border border-emerald-200">
+                <CheckCircle2 className="h-5 w-5 text-emerald-600 flex-shrink-0" />
+                <p className="text-sm text-emerald-700 font-medium">Wallets match! Ready to deploy.</p>
+              </div>
+            )}
+
+            {expectedWallet && connectedWallet && !canDeploy && (
+              <div className="flex items-center gap-2 p-3 rounded-lg bg-red-50 border border-red-200">
+                <AlertCircle className="h-5 w-5 text-red-600 flex-shrink-0" />
+                <p className="text-sm text-red-700">Wallets don't match. Please switch to your Keyura account wallet in MetaMask.</p>
+              </div>
+            )}
           </div>
-          {status && <div className="text-xs text-emerald-700">{status}{networkInfo ? ` (${networkInfo})` : ""}</div>}
-          {error && <div className="text-xs text-red-600">{error}</div>}
-          <div className="flex justify-end gap-2 pt-2">
-            <Button variant="outline" onClick={onClose} disabled={busy}>Cancel</Button>
-            <Button onClick={handleDeploy} disabled={!canDeploy || busy} className="bg-emerald-600 hover:bg-emerald-700">
-              {busy ? "Deploying..." : "Deploy Contract"}
+
+          {/* Status Messages */}
+          {status && (
+            <div className="flex items-center gap-2 p-3 rounded-lg bg-blue-50 border border-blue-200">
+              {busy ? (
+                <Loader2 className="h-4 w-4 text-blue-600 animate-spin flex-shrink-0" />
+              ) : (
+                <CheckCircle2 className="h-4 w-4 text-blue-600 flex-shrink-0" />
+              )}
+              <p className="text-sm text-blue-700">
+                {status}
+                {networkInfo && <span className="text-blue-600 ml-1">({networkInfo})</span>}
+              </p>
+            </div>
+          )}
+
+          {error && (
+            <div className="flex items-start gap-2 p-3 rounded-lg bg-red-50 border border-red-200">
+              <AlertCircle className="h-4 w-4 text-red-600 mt-0.5 flex-shrink-0" />
+              <p className="text-sm text-red-700">{error}</p>
+            </div>
+          )}
+
+          {/* Actions */}
+          <div className="flex justify-end gap-3 pt-2 border-t">
+            <Button variant="outline" onClick={onClose} disabled={busy} className="border-slate-300">
+              Cancel
+            </Button>
+            <Button
+              onClick={handleDeploy}
+              disabled={!canDeploy || busy}
+              className="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white shadow-lg shadow-emerald-500/30 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {busy ? (
+                <>
+                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                  Deploying...
+                </>
+              ) : (
+                <>
+                  {/* <Rocket className="h-4 w-4 mr-2" /> */}
+                  Deploy Contract
+                </>
+              )}
             </Button>
           </div>
         </CardContent>
-      </Card>
+        </Card>
+      </div>
     </div>
   );
 }
