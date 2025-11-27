@@ -84,19 +84,20 @@ const OnboardingState = ({
           className="h-full"
         >
           <Card className="text-slate-900 border-emerald-500 ring-2 ring-emerald-100/80 h-full flex flex-col p-8 md:p-10">
-            <CardHeader className="p-0 mb-6 flex-grow-0">
-              <div className="flex items-start gap-4">
+          <CardHeader className="p-0 mb-6 flex-grow-0">
+            <div className="flex flex-row items-center gap-4">
                 <div className="p-3 rounded-full bg-emerald-100 border border-emerald-300 flex-shrink-0">
-                  <Rocket className="h-7 w-7 text-emerald-600" />
+                <Rocket className="h-7 w-7 text-emerald-600" />
                 </div>
-                <div className="flex-1">
-                  <div className="flex items-center justify-between">
+
+                <div className="flex flex-col justify-center">
+                <div className="flex items-center justify-between">
                     <CardTitle className="text-3xl">Deploy New Contract</CardTitle>
-                    {/* <Badge className="bg-emerald-600 text-white font-bold px-3 py-1">Recommended</Badge> */}
-                  </div>
                 </div>
-              </div>
+                </div>
+            </div>
             </CardHeader>
+
 
             <CardContent className="space-y-6 flex-1 flex flex-col p-0 pt-6">
               
@@ -142,16 +143,18 @@ const OnboardingState = ({
           className="h-full"
         >
           <Card className="border border-slate-300 shadow-xl h-full flex flex-col p-8 md:p-10">
-            <CardHeader className="p-0 mb-6 flex-grow-0">
-              <div className="flex items-start gap-4">
+           <CardHeader className="p-0 mb-6 flex-grow-0">
+            <div className="flex items-center gap-4">
                 <div className="p-3 rounded-full bg-slate-100 border border-slate-300 flex-shrink-0">
-                  <Link2 className="h-7 w-7 text-slate-600" />
+                <Link2 className="h-7 w-7 text-slate-600" />
                 </div>
+
                 <div>
-                  <CardTitle className="text-3xl">Link Existing Vault</CardTitle>
+                <CardTitle className="text-3xl">Link Existing Vault</CardTitle>
                 </div>
-              </div>
-            </CardHeader>
+            </div>
+          </CardHeader>
+
             <CardContent className="space-y-6 flex-1 flex flex-col p-0 pt-6">
 
               <p className="text-base text-slate-600 -mt-3 mb-3">Confirm ownership of your deployed contract on-chain.</p>
