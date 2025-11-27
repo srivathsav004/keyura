@@ -10,14 +10,18 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/com
 import { Wallet, Lock, KeyRound } from 'lucide-react';
 import { login as loginApi } from '@/services/auth';
 
-// Backend-based authentication
-
 export default function LoginPage() {
   const router = useRouter();
   const [password, setPassword] = useState('');
   const [address, setAddress] = useState('');
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
+
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' && !busy) {
+      login();
+    }
+  };
 
   const login = async () => {
     setError('');
@@ -26,11 +30,15 @@ export default function LoginPage() {
     try {
       setBusy(true);
       const res = await loginApi({ wallet_address: address, password });
-      // Store minimal session locally if needed
-      localStorage.setItem('keyura_session', JSON.stringify({ address: res.wallet_address, userid: res.userid, ts: Date.now() }));
-      // Set cookie with userid for dashboard access (expires in 7 days)
+
+      localStorage.setItem(
+        'keyura_session',
+        JSON.stringify({ address: res.wallet_address, userid: res.userid, ts: Date.now() })
+      );
+
       const maxAge = 7 * 24 * 60 * 60;
       document.cookie = `userid=${encodeURIComponent(String(res.userid))}; Path=/; Max-Age=${maxAge}`;
+
       router.push('/dashboard');
     } catch (e: any) {
       setError(e?.message || 'Login failed');
@@ -42,21 +50,34 @@ export default function LoginPage() {
   return (
     <main className="min-h-screen bg-gradient-to-br from-slate-50 to-white grid place-items-center py-12">
       <div className="w-full max-w-md px-4 sm:px-6 lg:px-8">
+
         {/* Brand */}
-        <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }} className="flex items-center justify-center gap-2 mb-4">
+        <motion.div
+          initial={{ opacity: 0, y: -8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4 }}
+          className="flex items-center justify-center gap-2 mb-4"
+        >
           <KeyRound className="h-6 w-6 text-primary" />
           <div className="text-xl font-bold">
-            <span className="bg-gradient-to-r from-emerald-500 to-primary bg-clip-text text-transparent">Keyura</span>
+            <span className="bg-gradient-to-r from-emerald-500 to-primary bg-clip-text text-transparent">
+              Keyura
+            </span>
           </div>
         </motion.div>
+
         <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
           <Card className="shadow-xl border-slate-100">
             <CardHeader className="text-center">
               <CardTitle className="text-2xl">Welcome Back</CardTitle>
-              <CardDescription>Enter your wallet address and password to access your account.</CardDescription>
+              <CardDescription>
+                Enter your wallet address and password to access your account.
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-5">
+                
+                {/* Address Input */}
                 <div className="relative">
                   <div className="pointer-events-none absolute inset-y-0 left-3 flex items-center text-slate-400">
                     <Wallet className="h-4 w-4" />
@@ -66,9 +87,12 @@ export default function LoginPage() {
                     placeholder="0x..."
                     value={address}
                     onChange={(e) => setAddress(e.target.value)}
+                    onKeyDown={handleKeyPress}
                     className="pl-9"
                   />
                 </div>
+
+                {/* Password Input */}
                 <div className="relative">
                   <div className="pointer-events-none absolute inset-y-0 left-3 flex items-center text-slate-400">
                     <Lock className="h-4 w-4" />
@@ -78,14 +102,28 @@ export default function LoginPage() {
                     placeholder="Password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
+                    onKeyDown={handleKeyPress}
                     className="pl-9"
                   />
                 </div>
+
                 {error && <p className="text-red-600 text-sm">{error}</p>}
-                <Button onClick={login} disabled={busy} className="bg-gradient-to-r from-primary to-slate-800 text-white w-full">{busy ? 'Logging in...' : 'Login'}</Button>
+
+                <Button
+                  onClick={login}
+                  disabled={busy}
+                  className="bg-gradient-to-r from-primary to-slate-800 text-white w-full"
+                >
+                  {busy ? 'Logging in...' : 'Login'}
+                </Button>
+
                 <div className="text-center text-sm text-slate-600">
-                  First time here? <Link className="underline font-medium" href="/user-setup" prefetch={false}>Create profile</Link>
+                  First time here?{' '}
+                  <Link className="underline font-medium" href="/user-setup" prefetch={false}>
+                    Create profile
+                  </Link>
                 </div>
+
               </div>
             </CardContent>
           </Card>
@@ -94,5 +132,3 @@ export default function LoginPage() {
     </main>
   );
 }
-
-
