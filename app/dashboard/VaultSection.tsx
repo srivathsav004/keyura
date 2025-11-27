@@ -104,7 +104,7 @@ export default function VaultSection({ entries }: { entries: (TextEntry | FileEn
             <Key className="h-5 w-5 text-emerald-600" />
             <span>Access Your Vault</span>
           </CardTitle>
-          <CardDescription>Use your password locally to decrypt when viewing entries.</CardDescription>
+          <CardDescription>Use your password and wallet to decrypt when viewing entries.</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="flex flex-col md:flex-row md:items-center gap-3">
@@ -228,21 +228,101 @@ export default function VaultSection({ entries }: { entries: (TextEntry | FileEn
                 <Button
                   onClick={async () => {
                     if (!active || !pwValue) return;
+                    if (!(window as any).ethereum) {
+                      alert("MetaMask not detected. Please install MetaMask.");
+                      return;
+                    }
                     try {
+                      // Get user's wallet address for decryption
+                      const { BrowserProvider } = await import("ethers");
+                      const provider = new BrowserProvider((window as any).ethereum);
+                      await provider.send("eth_requestAccounts", []);
+                      const signer = await provider.getSigner();
+                      const userAddress = await signer.getAddress();
+
                       if (isActiveText) {
-                        let payload = (active as any).encrypted_data as string;
-                        try { payload = JSON.parse(payload).d || payload; } catch {}
+                        // Step 1: Decrypt wallet layer
+                        let walletEncrypted = (active as any).encrypted_data as string;
+                        if (!walletEncrypted.startsWith("0x")) {
+                          // Legacy format - try to parse
+                          try { 
+                            const parsed = JSON.parse(walletEncrypted);
+                            walletEncrypted = parsed.d || walletEncrypted;
+                          } catch {}
+                        }
+                        
+                        const passwordEncryptedPayload = await (window as any).ethereum.request({
+                          method: "eth_decrypt",
+                          params: [walletEncrypted, userAddress],
+                        });
+                        
+                        // Step 2: Decrypt password layer
+                        let payload = passwordEncryptedPayload;
+                        try { 
+                          const parsed = JSON.parse(payload);
+                          payload = parsed.d || payload;
+                        } catch {}
                         const plaintext = await decryptAesGcmFromBase64(payload, pwValue);
                         setViewResult(plaintext);
                       } else {
                         const fileIt = active as FileEntry;
-                        const cid = xorCidFromBase64(fileIt.encrypted_cid, pwValue);
+                        
+                        // Step 1: Decrypt wallet layer to get password-encrypted payload
+                        let walletEncryptedCid = fileIt.encrypted_cid;
+                        if (!walletEncryptedCid.startsWith("0x")) {
+                          // Legacy format - might be XOR encrypted directly
+                          // Try wallet decryption first, if it fails, assume legacy
+                          try {
+                            walletEncryptedCid = await (window as any).ethereum.request({
+                              method: "eth_decrypt",
+                              params: [walletEncryptedCid, userAddress],
+                            });
+                          } catch {
+                            // Legacy format - decrypt directly with password
+                            const cid = xorCidFromBase64(fileIt.encrypted_cid, pwValue);
+                            const res = await fetch(`https://gateway.pinata.cloud/ipfs/${cid}`);
+                            if (!res.ok) throw new Error("Failed to fetch from IPFS");
+                            const ab = await res.arrayBuffer();
+                            const bytes = new Uint8Array(ab);
+                            const decrypted = await decryptAesGcmBytes(bytes, pwValue);
+                            const blob = new Blob([new Uint8Array(decrypted)], { type: fileIt.file_type || "application/octet-stream" });
+                            const url = URL.createObjectURL(blob);
+                            const a = document.createElement('a');
+                            a.href = url;
+                            a.download = fileIt.entry_name || fileIt.original_filename || 'download';
+                            document.body.appendChild(a);
+                            a.click();
+                            a.remove();
+                            URL.revokeObjectURL(url);
+                            setPwOpen(false);
+                            return;
+                          }
+                        } else {
+                          walletEncryptedCid = await (window as any).ethereum.request({
+                            method: "eth_decrypt",
+                            params: [walletEncryptedCid, userAddress],
+                          });
+                        }
+                        
+                        // Step 2: Parse the payload and extract password-encrypted CID
+                        let passwordEncryptedPayload = walletEncryptedCid;
+                        try {
+                          const parsed = JSON.parse(passwordEncryptedPayload);
+                          passwordEncryptedPayload = parsed.d || passwordEncryptedPayload;
+                        } catch {
+                          // If not JSON, assume it's the encrypted CID directly
+                        }
+                        
+                        // Step 3: Decrypt password layer to get CID
+                        const cid = xorCidFromBase64(passwordEncryptedPayload, pwValue);
+                        
+                        // Step 4: Fetch from IPFS and decrypt file
                         const res = await fetch(`https://gateway.pinata.cloud/ipfs/${cid}`);
                         if (!res.ok) throw new Error("Failed to fetch from IPFS");
                         const ab = await res.arrayBuffer();
                         const bytes = new Uint8Array(ab);
                         const decrypted = await decryptAesGcmBytes(bytes, pwValue);
-                        const blob = new Blob([decrypted], { type: fileIt.file_type || "application/octet-stream" });
+                        const blob = new Blob([new Uint8Array(decrypted)], { type: fileIt.file_type || "application/octet-stream" });
                         const url = URL.createObjectURL(blob);
                         const a = document.createElement('a');
                         a.href = url;

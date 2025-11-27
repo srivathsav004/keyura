@@ -8,6 +8,7 @@ import { createFileEntry } from "@/services/entries";
 import { getUserContract } from "@/services/contracts";
 import { ABI } from "./contractBytecode";
 import { keccak256, toUtf8Bytes } from "ethers";
+import { encrypt } from "@metamask/eth-sig-util";
 
 type Props = {
   userid: number;
@@ -26,11 +27,13 @@ async function encryptAesGcmBytes(bytes: Uint8Array, password: string) {
     ["encrypt", "decrypt"]
   );
   const iv = crypto.getRandomValues(new Uint8Array(12));
-  const encrypted = await crypto.subtle.encrypt({ name: "AES-GCM", iv }, key, bytes);
+  // Ensure we have a proper ArrayBuffer by creating a copy
+  const buffer = new Uint8Array(bytes).buffer;
+  const encrypted = await crypto.subtle.encrypt({ name: "AES-GCM", iv }, key, buffer);
   const out = new Uint8Array(iv.length + encrypted.byteLength);
   out.set(iv, 0);
   out.set(new Uint8Array(encrypted), iv.length);
-  return out;
+  return new Uint8Array(out);
 }
 
 function xorEncryptToBase64(text: string, password: string) {
@@ -69,7 +72,8 @@ export default function FileStorageCard({ userid, contractid, onStored }: Props)
       setStatus("Encrypting file...");
       // Encrypt file bytes client-side
       const ab = await file.arrayBuffer();
-      const encryptedBytes = await encryptAesGcmBytes(new Uint8Array(ab), password);
+      const fileBytes = new Uint8Array(ab);
+      const encryptedBytes = await encryptAesGcmBytes(fileBytes, password);
 
       // Upload to Pinata
       setStatus("Uploading to IPFS...");
@@ -141,9 +145,25 @@ export default function FileStorageCard({ userid, contractid, onStored }: Props)
       const contract = new Contract(contractInfo.contract_address, ABI as any, signer);
       const addrLower = (await signer.getAddress()).toLowerCase();
       const keyHash = keccak256(toUtf8Bytes(`${addrLower}:${password}:secure_salt_v1`));
-      const payload = JSON.stringify({ h: keyHash, d: encrypted_cid });
+      const passwordEncryptedPayload = JSON.stringify({ h: keyHash, d: encrypted_cid });
+
+      // 4) Get wallet encryption public key and encrypt the password-encrypted CID
+      setStatus("Getting wallet encryption key...");
+      const encryptionPublicKey = await (window as any).ethereum.request({
+        method: "eth_getEncryptionPublicKey",
+        params: [addrLower],
+      });
+      
+      setStatus("Encrypting with wallet...");
+      const walletEncrypted = encrypt({
+        publicKey: encryptionPublicKey,
+        data: passwordEncryptedPayload,
+        version: "x25519-xsalsa20-poly1305",
+      });
+      const walletEncryptedHex = `0x${Buffer.from(JSON.stringify(walletEncrypted), "utf8").toString("hex")}`;
+
       setStatus("Sending transaction...");
-      const tx = await contract.addEntry(fileName || file.name, payload, file.type || "application/octet-stream");
+      const tx = await contract.addEntry(fileName || file.name, walletEncryptedHex, file.type || "application/octet-stream");
       setStatus("Waiting for confirmation...");
       const receipt = await tx.wait();
       const txHash: string = tx.hash || receipt?.hash;
@@ -157,7 +177,7 @@ export default function FileStorageCard({ userid, contractid, onStored }: Props)
         original_filename: file.name,
         file_type: file.type || "application/octet-stream",
         file_size: file.size,
-        encrypted_cid,
+        encrypted_cid: walletEncryptedHex, // Store wallet-encrypted version
         ipfs_cid: cid,
         transaction_hash: txHash,
       });
@@ -265,7 +285,7 @@ export default function FileStorageCard({ userid, contractid, onStored }: Props)
 
         <div className="text-xs text-slate-600 bg-slate-50 p-3 rounded-lg">
           <Database className="h-3 w-3 inline mr-1" />
-          Max file size: 2 MB. Files are encrypted locally, pinned to IPFS, and an on-chain pointer is recorded.
+          Max file size: 2 MB. Files are encrypted with password and wallet encryption, pinned to IPFS, and an on-chain pointer is recorded.
         </div>
       </CardContent>
     </Card>

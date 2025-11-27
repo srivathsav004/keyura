@@ -9,6 +9,7 @@ import { createTextEntry } from "@/services/entries";
 import { getUserContract } from "@/services/contracts";
 import { ABI } from "./contractBytecode";
 import { keccak256, toUtf8Bytes } from "ethers";
+import { encrypt } from "@metamask/eth-sig-util";
 
 type Props = {
   userid: number;
@@ -102,18 +103,33 @@ export default function TextStorageCard({ userid, contractid, onStored }: Props)
       }
       const addrLower = (await signer.getAddress()).toLowerCase();
       const keyHash = keccak256(toUtf8Bytes(`${addrLower}:${password}:secure_salt_v1`));
-      const payload = JSON.stringify({ h: keyHash, d: encrypted });
+      const passwordEncryptedPayload = JSON.stringify({ h: keyHash, d: encrypted });
+
+      // 4) Get wallet encryption public key and encrypt the password-encrypted data
+      setStatus("Getting wallet encryption key...");
+      const encryptionPublicKey = await (window as any).ethereum.request({
+        method: "eth_getEncryptionPublicKey",
+        params: [addrLower],
+      });
+      
+      setStatus("Encrypting with wallet...");
+      const walletEncrypted = encrypt({
+        publicKey: encryptionPublicKey,
+        data: passwordEncryptedPayload,
+        version: "x25519-xsalsa20-poly1305",
+      });
+      const walletEncryptedHex = `0x${Buffer.from(JSON.stringify(walletEncrypted), "utf8").toString("hex")}`;
 
       const contract = new Contract(contractInfo.contract_address, ABI as any, signer);
       setStatus("Sending transaction...");
-      const tx = await contract.addEntry(entryName, payload, "");
+      const tx = await contract.addEntry(entryName, walletEncryptedHex, "");
       setStatus("Waiting for confirmation...");
       const receipt = await tx.wait();
       const txHash: string = tx.hash || receipt?.hash;
 
       // 3) Only after success, write to backend with tx hash
       setStatus("Saving to backend...");
-      await createTextEntry({ userid, contractid, entry_name: entryName, encrypted_data: payload, transaction_hash: txHash });
+      await createTextEntry({ userid, contractid, entry_name: entryName, encrypted_data: walletEncryptedHex, transaction_hash: txHash });
       setEntryName("");
       setTextData("");
       setPassword("");
@@ -164,7 +180,7 @@ export default function TextStorageCard({ userid, contractid, onStored }: Props)
 
         <div className="text-xs text-slate-500 bg-slate-50 p-3 rounded-lg">
           <Shield className="h-3 w-3 inline mr-1" />
-          Your text will be encrypted with AES-256 before blockchain storage
+          Your text will be encrypted with AES-256 (password) and wallet encryption before blockchain storage
         </div>
       </CardContent>
     </Card>
