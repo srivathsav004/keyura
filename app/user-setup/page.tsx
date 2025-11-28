@@ -7,7 +7,8 @@ import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardHeader, CardContent, CardTitle, CardDescription } from '@/components/ui/card';
-import { Wallet, Copy, Shield, KeyRound } from 'lucide-react';
+import { Wallet, Copy, Shield } from 'lucide-react';
+import Image from 'next/image';
 import { createUser } from '@/services/auth';
 
 type InjectedProvider = any;
@@ -110,11 +111,28 @@ export default function UserSetupPage() {
     <main className="min-h-screen py-16 bg-gradient-to-br from-slate-50 to-white">
       <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
         {/* Brand */}
-        <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }} className="flex items-center justify-center gap-2">
-          <KeyRound className="h-6 w-6 text-primary" />
-          <div className="text-xl font-bold">
-            <span className="bg-gradient-to-r from-emerald-500 to-primary bg-clip-text text-transparent">Keyura</span>
+        <motion.div 
+          initial={{ opacity: 0, y: -8 }} 
+          animate={{ opacity: 1, y: 0 }} 
+          transition={{ duration: 0.4 }} 
+          className="flex flex-col items-center justify-center gap-2 mb-2"
+        >
+          <div className="flex items-center gap-4">
+            <div className="flex-shrink-0">
+              <Image 
+                src="/keyura-logo.png" 
+                alt="Keyura Logo" 
+                width={48} 
+                height={48} 
+                className="h-12 w-12 object-contain"
+                priority
+              />
+            </div>
+            <h1 className="text-4xl font-extrabold bg-gradient-to-r from-emerald-500 to-primary bg-clip-text text-transparent">
+              Keyura
+            </h1>
           </div>
+          <p className="text-slate-500 text-lg">Secure Document Storage</p>
         </motion.div>
         <motion.div
           initial={{ opacity: 0, y: -10 }}
@@ -122,7 +140,7 @@ export default function UserSetupPage() {
           transition={{ duration: 0.4 }}
           className="text-center"
         >
-          <h1 className="text-3xl sm:text-4xl font-bold text-primary mb-3">Set Up Your Profile</h1>
+          <h1 className="text-4xl sm:text-5xl font-bold text-primary mb-4">Set Up Your Profile</h1>
           {/* <p className="text-slate-600 max-w-xl mx-auto">
             On this page, you will:
             <br />
