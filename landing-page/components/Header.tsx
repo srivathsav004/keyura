@@ -3,7 +3,8 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
-import { KeyRound, Menu, X } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
+import Image from 'next/image';
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -35,21 +36,27 @@ const Header = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center py-4">
           {/* Logo */}
-          <motion.div
-            className="flex items-center space-x-2"
-            whileHover={{ scale: 1.05 }}
-            transition={{ duration: 0.2 }}
-          >
+          <div className="flex items-center space-x-3">
             <motion.div
-              animate={{ rotate: [0, 5, -5, 0] }}
-              transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
+              whileHover={{ scale: 1.05 }}
+              transition={{ duration: 0.2 }}
+              className="flex items-center space-x-3"
             >
-              <KeyRound className="h-8 w-8 text-primary" />
+              <div>
+                <Image 
+                  src="/keyura-logo.png" 
+                  alt="Keyura Logo" 
+                  width={40} 
+                  height={40} 
+                  className="h-14 w-14 object-contain"
+                  priority
+                />
+              </div>
+              <span className="text-3xl font-extrabold tracking-tight bg-gradient-to-r from-emerald-500 to-primary bg-clip-text text-transparent">
+                Keyura
+              </span>
             </motion.div>
-            <div className="text-xl font-bold">
-            <span className="bg-gradient-to-r from-emerald-500 to-primary bg-clip-text text-transparent">Keyura</span>
           </div>
-          </motion.div>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
