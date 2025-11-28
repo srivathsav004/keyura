@@ -2,7 +2,15 @@
 
 import DashboardHeader from "./DashboardHeader";
 
-export default function DashboardHeaderClient({ addressShort }: { addressShort?: string }) {
+export default function DashboardHeaderClient({ 
+  addressShort,
+  lastRefresh,
+  onRefresh 
+}: { 
+  addressShort?: string;
+  lastRefresh?: string | null;
+  onRefresh?: () => Promise<void>;
+}) {
   const onLogout = () => {
     try {
       // Clear userid cookie
@@ -16,5 +24,12 @@ export default function DashboardHeaderClient({ addressShort }: { addressShort?:
     }
   };
 
-  return <DashboardHeader onLogout={onLogout} addressShort={addressShort} />;
+  return (
+    <DashboardHeader 
+      onLogout={onLogout} 
+      addressShort={addressShort}
+      lastRefresh={lastRefresh}
+      onRefresh={onRefresh}
+    />
+  );
 }
