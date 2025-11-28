@@ -145,7 +145,7 @@ export default function TextStorageCard({ userid, contractid, onStored }: Props)
   };
 
   return (
-    <Card className="border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+    <Card className="border-slate-200 shadow-sm hover:shadow-md transition-shadow h-full flex flex-col">
       <CardHeader className="pb-4">
         <CardTitle className="flex items-center space-x-2">
           <FileText className="h-5 w-5 text-emerald-600" />
@@ -155,32 +155,61 @@ export default function TextStorageCard({ userid, contractid, onStored }: Props)
           Encrypt and store private notes, seed phrases, or any text data
         </CardDescription>
       </CardHeader>
-      <CardContent className="space-y-4">
-        <div className="space-y-2">
-          <Label htmlFor="textName">Entry Name</Label>
-          <Input id="textName" placeholder="e.g., 'Personal Notes', 'Seed Phrase'" className="border-slate-200 focus:border-emerald-500" value={entryName} onChange={(e) => setEntryName(e.target.value)} />
+      <CardContent className="space-y-4 flex-1 flex flex-col">
+        <div className="space-y-4 flex-1">
+          <div className="space-y-2">
+            <Label htmlFor="textName">Entry Name</Label>
+            <Input 
+              id="textName" 
+              placeholder="e.g., 'Personal Notes', 'Seed Phrase'" 
+              className="border-slate-200 focus:border-emerald-500" 
+              value={entryName} 
+              onChange={(e) => setEntryName(e.target.value)} 
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="textData">Text Content</Label>
+            <Textarea 
+              id="textData" 
+              placeholder="Enter your private text, notes, or data..." 
+              rows={5} 
+              className="border-slate-200 focus:border-emerald-500 resize-none" 
+              value={textData} 
+              onChange={(e) => setTextData(e.target.value)} 
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="textPassword">Encryption Password</Label>
+            <Input 
+              id="textPassword" 
+              type="password" 
+              placeholder="Strong password for encryption" 
+              className="border-slate-200 focus:border-emerald-500" 
+              value={password} 
+              onChange={(e) => setPassword(e.target.value)} 
+            />
+          </div>
+          {error && <div className="text-sm text-red-600">{error}</div>}
         </div>
 
-        <div className="space-y-2">
-          <Label htmlFor="textData">Text Content</Label>
-          <Textarea id="textData" placeholder="Enter your private text, notes, or data..." rows={4} className="border-slate-200 focus:border-emerald-500 resize-none" value={textData} onChange={(e) => setTextData(e.target.value)} />
-        </div>
+        <div className="space-y-3 pt-2">
+          <Button 
+            onClick={handleStore} 
+            disabled={busy} 
+            className="w-full bg-emerald-600 hover:bg-emerald-700" 
+            aria-busy={busy}
+          >
+            {busy ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Lock className="h-4 w-4 mr-2" />}
+            {busy ? "Processing..." : "Encrypt & Store Text"}
+          </Button>
+          {status && <div className="text-xs text-emerald-700 text-center">{status}</div>}
 
-        <div className="space-y-2">
-          <Label htmlFor="textPassword">Encryption Password</Label>
-          <Input id="textPassword" type="password" placeholder="Strong password for encryption" className="border-slate-200 focus:border-emerald-500" value={password} onChange={(e) => setPassword(e.target.value)} />
-        </div>
-        {error && <div className="text-sm text-red-600">{error}</div>}
-
-        <Button onClick={handleStore} disabled={busy} className="w-full bg-emerald-600 hover:bg-emerald-700" aria-busy={busy}>
-          {busy ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Lock className="h-4 w-4 mr-2" />}
-          {busy ? "Processing..." : "Encrypt & Store Text"}
-        </Button>
-        {status && <div className="text-xs text-emerald-700">{status}</div>}
-
-        <div className="text-xs text-slate-500 bg-slate-50 p-3 rounded-lg">
-          <Shield className="h-3 w-3 inline mr-1" />
-          Your text will be encrypted with AES-256 (password) and wallet encryption before blockchain storage
+          <div className="text-xs text-slate-600 bg-slate-50 p-3 rounded-lg">
+            <Shield className="h-3 w-3 inline mr-1" />
+            Your text will be encrypted with AES-256 (password) and wallet encryption before blockchain storage
+          </div>
         </div>
       </CardContent>
     </Card>
