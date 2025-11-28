@@ -8,6 +8,11 @@ const inter = Inter({ subsets: ['latin'] });
 export const metadata: Metadata = {
   title: 'Keyura - Secure Document Management',
   description: 'Protect your sensitive documents with military-grade encryption. Secure, private, and easy to use document management platform.',
+  icons: {
+    icon: '/keyura-favicon.png',
+    shortcut: '/keyura-favicon.png',
+    apple: '/keyura-favicon.png',
+  },
 };
 
 export default function RootLayout({
