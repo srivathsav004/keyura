@@ -1,7 +1,8 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { KeyRound, Shield, Mail, Twitter, Github, Linkedin } from 'lucide-react';
+import { Shield, Mail, Twitter, Github, Linkedin } from 'lucide-react';
+import Image from 'next/image';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -45,22 +46,28 @@ const Footer = () => {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
-              className="flex items-center space-x-2 mb-6"
+              className="flex items-center space-x-4 mb-8"
             >
-              <motion.div
-                animate={{ rotate: [0, 5, -5, 0] }}
-                transition={{ duration: 3, repeat: Infinity, repeatDelay: 2 }}
-              >
-                <KeyRound className="h-8 w-8" />
-              </motion.div>
-              <span className="text-2xl font-bold">Keyura</span>
+              <div className="flex-shrink-0">
+                <Image 
+                  src="/keyura-logo.png" 
+                  alt="Keyura Logo" 
+                  width={40} 
+                  height={40} 
+                  className="h-12 w-12 object-contain"
+                  priority
+                />
+              </div>
+              <span className="text-3xl font-extrabold bg-gradient-to-r from-white to-slate-200 bg-clip-text text-transparent">
+                Keyura
+              </span>
             </motion.div>
 
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
-              className="text-white/80 text-lg mb-6 leading-relaxed"
+              className="text-white/90 text-xl mb-6 leading-relaxed"
             >
               Your Keys, Your Data, Your Security
             </motion.p>
