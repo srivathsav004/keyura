@@ -7,7 +7,8 @@ import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
-import { Wallet, Lock, KeyRound } from 'lucide-react';
+import { Wallet, Lock } from 'lucide-react';
+import Image from 'next/image';
 import { login as loginApi } from '@/services/auth';
 
 export default function LoginPage() {
@@ -52,24 +53,36 @@ export default function LoginPage() {
       <div className="w-full max-w-md px-4 sm:px-6 lg:px-8">
 
         {/* Brand */}
-        <motion.div
+        <motion.div 
           initial={{ opacity: 0, y: -8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4 }}
-          className="flex items-center justify-center gap-2 mb-4"
+          className="flex flex-col items-center justify-center gap-3 mb-8"
         >
-          <KeyRound className="h-6 w-6 text-primary" />
-          <div className="text-xl font-bold">
-            <span className="bg-gradient-to-r from-emerald-500 to-primary bg-clip-text text-transparent">
-              Keyura
-            </span>
+          <div className="flex flex-col items-center">
+            <div className="flex items-center gap-4 mb-2">
+              <div className="flex-shrink-0">
+                <Image 
+                  src="/keyura-logo.png" 
+                  alt="Keyura Logo" 
+                  width={48} 
+                  height={48} 
+                  className="h-12 w-12 object-contain"
+                  priority
+                />
+              </div>
+              <h1 className="text-4xl font-extrabold bg-gradient-to-r from-emerald-500 to-primary bg-clip-text text-transparent">
+                Keyura
+              </h1>
+            </div>
+            <p className="text-slate-600 text-lg font-medium">Secure Document Storage on Blockchain</p>
           </div>
         </motion.div>
 
         <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
           <Card className="shadow-xl border-slate-100">
             <CardHeader className="text-center">
-              <CardTitle className="text-2xl">Welcome Back</CardTitle>
+              <CardTitle className="text-3xl">Welcome Back</CardTitle>
               <CardDescription>
                 Enter your wallet address and password to access your account.
               </CardDescription>
