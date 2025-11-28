@@ -20,6 +20,15 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 
+declare global {
+  interface Window {
+    ethereum?: any; // Consider using @metamask/providers for better type safety
+  }
+}
+
+// Utility function to shorten addresses
+const short = (v: string) => (v && v.length > 8 ? `${v.slice(0, 6)}…${v.slice(-4)}` : "0x…");
+
 export default function DashboardPage() {
   const router = useRouter();
   const [uid, setUid] = useState<string | null>(null);
@@ -105,14 +114,14 @@ export default function DashboardPage() {
       setSetupError(null);
       setSetupStatus("Verifying contract ownership…");
       
-      if (!(window as any).ethereum) {
+      if (!window.ethereum) {
         throw new Error("MetaMask (or compatible wallet) not detected.");
       }
 
       const { BrowserProvider, Contract: EthersContract, isAddress } = await import("ethers");
       if (!isAddress(addr)) throw new Error("Invalid Ethereum address format.");
 
-      const provider = new BrowserProvider((window as any).ethereum);
+      const provider = new BrowserProvider(window.ethereum);
       await provider.send("eth_requestAccounts", []);
       const signer = await provider.getSigner();
       const userAddress = (await signer.getAddress()).toLowerCase();
@@ -141,13 +150,15 @@ export default function DashboardPage() {
     }
   };
 
-  const copyContractAddress = useCallback(() => {
+  const copyContractAddress = useCallback(async () => {
     if (!contract?.contract_address) return;
-    navigator.clipboard.writeText(contract.contract_address).then(() => {
+    try {
+      await navigator.clipboard.writeText(contract.contract_address);
       toast.success("Contract address copied to clipboard");
-    }).catch(() => {
+    } catch (err) {
+      console.error('Failed to copy address:', err);
       toast.error("Failed to copy address");
-    });
+    }
   }, [contract?.contract_address]);
 
   const StatsSkeleton = () => (
