@@ -8,6 +8,8 @@ import { useEffect, useState } from "react";
 type Props = {
   onLogout?: () => void;
   addressShort?: string;
+  lastRefresh?: string | null;
+  onRefresh?: () => Promise<void>;
 };
 
 const DashboardHeader = ({ onLogout, addressShort = "0x" }: Props) => {
