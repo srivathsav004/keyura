@@ -194,7 +194,7 @@ export default function TextStorageCard({ userid, contractid, onStored }: Props)
           {error && <div className="text-sm text-red-600">{error}</div>}
         </div>
 
-        <div className="space-y-3 pt-2">
+        <div className="space-y-4">
           <Button 
             onClick={handleStore} 
             disabled={busy} 
@@ -204,7 +204,7 @@ export default function TextStorageCard({ userid, contractid, onStored }: Props)
             {busy ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Lock className="h-4 w-4 mr-2" />}
             {busy ? "Processing..." : "Encrypt & Store Text"}
           </Button>
-          {status && <div className="text-xs text-emerald-700 text-center">{status}</div>}
+          {status && <div className="text-xs text-emerald-700">{status}</div>}
 
           <div className="text-xs text-slate-600 bg-slate-50 p-3 rounded-lg">
             <Shield className="h-3 w-3 inline mr-1" />

@@ -214,7 +214,10 @@ export default function FileStorageCard({ userid, contractid, onStored }: Props)
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="space-y-2">
-          <Label htmlFor="fileInput">Select File</Label>
+          <div className="flex items-center gap-2">
+            <Label htmlFor="fileInput">Select File</Label>
+            <span className="text-xs text-slate-500">(Will scale this to 50MB in the next update if i get a decent response)</span>
+          </div>
           <div
             className="border-2 border-dashed border-slate-200 rounded-lg p-6 text-center hover:border-emerald-300 transition-colors cursor-pointer"
             onClick={() => fileRef.current?.click()}
@@ -223,7 +226,7 @@ export default function FileStorageCard({ userid, contractid, onStored }: Props)
           >
             <Upload className="h-8 w-8 text-slate-400 mx-auto mb-2" />
             <p className="text-sm text-slate-600">Click to add a file</p>
-            <p className="text-xs text-slate-400">Any file type • Max 2 MB</p>
+            <p className="text-xs text-slate-400"> Max 2 MB</p>
             <Input
               id="fileInput"
               ref={fileRef}
