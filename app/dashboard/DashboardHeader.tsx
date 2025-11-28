@@ -1,7 +1,8 @@
 'use client';
 
 import { Button } from "@/components/ui/button";
-import { LogOut, KeyRound } from "lucide-react";
+import { LogOut } from "lucide-react";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 
 type Props = {
@@ -46,8 +47,17 @@ const DashboardHeader = ({ onLogout, addressShort = "0x" }: Props) => {
 
         {/* Left logo */}
         <div className="flex items-center space-x-2">
-          <KeyRound className="h-5 w-5 text-emerald-600" />
-          <span className="font-semibold text-slate-900 text-base">
+          <div className="flex-shrink-0">
+            <Image 
+              src="/keyura-logo.png" 
+              alt="Keyura Logo" 
+              width={52} 
+              height={52} 
+              className="h-15 w-15 object-contain"
+              priority
+            />
+          </div>
+          <span className="text-2xl font-semibold bg-gradient-to-r from-emerald-500 to-primary bg-clip-text text-transparent tracking-tight">
             Keyura
           </span>
         </div>
