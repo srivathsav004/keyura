@@ -58,7 +58,7 @@ function xorCidFromBase64(b64: string, password: string): string {
   return new TextDecoder().decode(cidBytes);
 }
 
-export default function VaultSection({ entries }: { entries: (TextEntry | FileEntry)[] }) {
+export default function VaultSection({ entries, loading = false }: { entries: (TextEntry | FileEntry)[]; loading?: boolean }) {
   const [q, setQ] = useState("");
   const [typeFilter, setTypeFilter] = useState<"all" | "text" | "file">("all");
   const [page, setPage] = useState(1);
@@ -102,6 +102,30 @@ export default function VaultSection({ entries }: { entries: (TextEntry | FileEn
       hour12: false,
     }) + " IST";
   };
+
+  if (loading) {
+    return (
+      <Card className="border-slate-200 shadow-sm overflow-hidden">
+        <CardHeader className="border-b border-slate-100 px-6 py-4">
+          <div className="flex items-center justify-between">
+            <div>
+              <CardTitle className="text-lg font-semibold text-slate-900">Vault</CardTitle>
+              <CardDescription className="text-slate-500 mt-1">
+                Loading your data...
+              </CardDescription>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent className="p-6">
+          <div className="space-y-4">
+            {[...Array(3)].map((_, i) => (
+              <div key={i} className="h-24 bg-slate-100 rounded-lg animate-pulse" />
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
 
   return (
     <div className="space-y-6">
